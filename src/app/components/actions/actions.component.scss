@@ -1,0 +1,17 @@
+@use "variables" as *;
+
+.action-wrapper {
+    width: calc(100vh - 500px); //subtract the width of shop
+    .action-list {
+        height: 350px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        border-bottom: $color-red 5px solid;
+    }
+    .item {
+    }
+    .footer {
+
+    }
+}

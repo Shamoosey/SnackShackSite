@@ -1,0 +1,11 @@
+@use "variables" as *;
+
+.main-wrapper {
+    height: 100vh;
+    background-color: $shade-white-grey;
+    width: 100%;
+    .content {
+        display: flex;
+        width: 100%;
+    }
+}
