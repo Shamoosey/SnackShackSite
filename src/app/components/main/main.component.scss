@@ -4,8 +4,11 @@
     height: 100vh;
     background-color: $shade-white-grey;
     width: 100%;
+    min-width: 1000px;
+    overflow-x: scroll;
     .content {
         display: flex;
         width: 100%;
+        background-color: $shade-black-ligher;
     }
 }

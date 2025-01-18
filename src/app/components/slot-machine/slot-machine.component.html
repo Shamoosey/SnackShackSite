@@ -1,0 +1,27 @@
+
+<div class="slot-wrapper">
+    <div class="moving-border">
+        <div class="slots">
+            <div class="reel"></div>
+            <div class="reel"></div>
+            <div class="reel"></div>
+        </div>
+    </div>
+    <div class="actions">
+        <button 
+            mat-flat-button 
+            color="primary" 
+            (click)="rollClick()" 
+            [disabled]="rolling"
+            class="roll"
+            >ROLL
+        </button>
+        <span>{{resultText}}</span>
+        <button 
+            mat-icon-button
+            (click)="infoClick()" 
+            class="info">
+            <mat-icon>info_outline</mat-icon>
+        </button>
+    </div>
+</div>

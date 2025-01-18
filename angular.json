@@ -49,8 +49,7 @@
             "styles": [
               "@angular/material/prebuilt-themes/azure-blue.css",
               "src/styles.css",
-              "src/assets/fonts/fonts.css",
-              "src/assets/scss/_animations.scss"
+              "src/assets/fonts/fonts.css"
             ],
             "scripts": []
           },

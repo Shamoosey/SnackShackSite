@@ -18,7 +18,7 @@
         
         h1 {
             display: flex;
-            font-size: 70px;
+            font-size: 64px;
             flex-direction: column;
             justify-content: space-around;
             font-family: "balantro";
@@ -27,6 +27,7 @@
 
         img {
             height: 200px;
+            z-index: 2;
             &.right {
                 transform: rotate(20deg) translate(35px, -30px);
                 overflow: hidden;

@@ -7,7 +7,9 @@
         display: flex;
         flex-direction: column;
         justify-content: space-evenly;
-        border-bottom: $color-red 5px solid;
+        h1 {
+            color: $white;
+        }
     }
     .item {
     }
