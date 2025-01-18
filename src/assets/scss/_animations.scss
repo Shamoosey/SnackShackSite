@@ -1,0 +1,18 @@
+$borderlength: 50px;
+$borderwidth: 10px;
+$bordercolor: yellow;
+
+@keyframes marching-borders {
+    0%   {background-position: 0 0, $borderlength 100%, 0 $borderlength, 100% 0;}
+    100% {background-position: $borderlength 0, 0 100%, 0 0, 100% $borderlength;}
+}
+
+.moving-border {
+    background-image: linear-gradient(90deg, $bordercolor 50%, transparent 50%),
+        linear-gradient(90deg, $bordercolor 50%, transparent 50%),
+        linear-gradient(0, $bordercolor 50%, transparent 50%),
+        linear-gradient(0, $bordercolor 50%, transparent 50%);
+    background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
+    background-size: $borderlength $borderwidth, $borderlength $borderwidth, $borderwidth $borderlength, $borderwidth $borderlength;
+    animation: marching-borders 400ms infinite linear;
+}
