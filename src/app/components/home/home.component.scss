@@ -1,23 +1,24 @@
-@import "variables";
+@use "variables" as *;
 
 .home-wrapper {
     display: flex;
     flex-direction: column;
+    background-color: $shade-white-grey;
     .header-wrapper {
         padding: 16px 16px 0px 16px;
-        background-color: #0288f1;
+        background-color: $color-blue;
         .main-header {
             display: flex;
             flex-direction: row;
             justify-content: space-between;
             
-            background-color: white;
+            background-color: $shade-white;
     
-            border-top: 24px solid #fa453c;
-            border-left: 24px solid #fa453c;
-            border-bottom: 24px solid green;
-            border-right: 24px solid green;
-            border-radius: 5px;
+            border-top: 24px solid $color-red;
+            border-left: 24px solid $color-red;
+            border-bottom: 24px solid $color-green;
+            border-right: 24px solid $color-green;
+            border-radius: 5px; 
             
             h1 {
                 display: flex;
@@ -29,44 +30,45 @@
             }
     
             img {
+                height: 200px;
                 &.right {
-                    height: 200px;
-                    transform: rotate(345deg) translate(-40px, 60px);
+                    transform: rotate(20deg) translate(35px, -30px);
+                    overflow: hidden;
                 }
                 &.left {
-                    height: 200px;
-                    transform: rotate(20deg) translate(35px, -30px);
+                    transform: rotate(345deg) translate(-40px, 60px);
                 }
             }
         }
     }
     .content {
         margin-left: 16px;
-        width: 400px;
-        border-right: #fa453c solid 5px;
-        border-left: #fa453c solid 5px;
+        width: 500px;
+        border-right: $color-red solid 5px;
+        border-left: $color-red solid 5px;
+        background-color: $shade-black-ligher;
 
         .sidebar-game {
             padding-top: 40px;
             display: flex;
             flex-direction: column;
-            background-color: #152123;
             .sidebar-header {
-                border: #fa453c solid 5px;
+                background-color: $shade-black;
+                border: $color-red solid 5px;
                 border-radius: 10px;
                 display: flex;
                 flex-direction: column;
                 justify-content: space-around;
-                padding: 32px 64px;
+                padding: 32px 80px;
                 margin: auto;
                 .title-wrapper {
                     .title {
                         span {
                             border-radius: 10px;
                             padding: 8px 16px;
-                            font-size: 60px;
+                            font-size: 80px;
                             letter-spacing: 5px;
-                            color: white;
+                            color: $shade-white;
                         }
                     } 
                 }
@@ -74,7 +76,7 @@
                     margin: auto;
                     margin-top: 16px;
                     span {
-                        color: white;
+                        color: $shade-white;
                         font-size: 18px;
                         letter-spacing: 1.5px;
                     }
@@ -82,12 +84,12 @@
             }
         }
         .game-score {
-            background-color: #263436;
+            background-color: $shade-black-ligher;
             display: flex;
-            color: white;
+            color: $shade-white;
             .round-score {
-                background-color: #152123;
-                white-space: pre-line;
+                background-color: $shade-black;
+                $shade-white-space: pre-line;
                 padding: 16px;
                 span {
                     text-align: left;
