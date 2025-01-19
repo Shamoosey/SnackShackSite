@@ -1,18 +1,23 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './core/components';
-import { AuthCallbackComponent, LoginComponent } from './core/auth';
+import { AuthCallbackComponent, LoginComponent } from './core/data/auth';
+import { AuthGuard } from './core/data/auth/auth-guard/AuthGuard';
 
 
 const routes: Routes = [
-  { path: 'auth/callback', component: AuthCallbackComponent },
+  { 
+    path: 'auth/callback', 
+    component: AuthCallbackComponent 
+  },
   {
-    path: "home",
-    component: HomeComponent
+    path: "login",
+    component: LoginComponent
   },
   {
     path: "",
-    component: LoginComponent
+    component: HomeComponent,
+    canActivate: [AuthGuard],
   }
 ];
 

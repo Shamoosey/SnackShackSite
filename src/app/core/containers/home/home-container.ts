@@ -1,4 +1,6 @@
 import { Component, Input } from '@angular/core';
+import { ShackState } from '../../data/store/shack.reducer';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'home-container',
@@ -6,5 +8,14 @@ import { Component, Input } from '@angular/core';
   standalone: false,
 })
 export class HomeContainer {
-    @Input() ChipCount: number= 0;
+
+  constructor(
+    private store: Store<ShackState>
+  ) {
+    
+  }
+
+  ngOnInit(): void {
+    
+  }
 }

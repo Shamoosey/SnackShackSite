@@ -8,14 +8,15 @@ import { EffectsModule } from '@ngrx/effects';
 import { ShackEffects } from './data/store/shack.effects';
 import { shackReducer, SHACK_FEATURE_KEY } from './data/store/shack.reducer';
 import { StoreModule } from '@ngrx/store';
-import { UserService } from './data/services';
+import { CORE_SERVICES, UserService } from './data/services';
 import { MaterialModule } from '../material.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { SharedModule } from '../shared/shared.module';
-import { AUTH_COMPONENTS } from './auth';
+import { AUTH_COMPONENTS } from './data/auth';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { AppRoutingModule } from '../app-routing.module';
+import { TokenInterceptor } from './data/interceptors/TokenInterceptor';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { AppRoutingModule } from '../app-routing.module';
   providers: [
     provideHttpClient(withInterceptorsFromDi()),
     provideAnimations(),
-    UserService
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+    ...CORE_SERVICES,
   ],
   exports: [
     ...CORE_COMPONENTS,

@@ -1,5 +1,4 @@
 import { MainActionsComponent } from "./main-actions/main-actions.component";
-import { AuthCallbackComponent } from "../auth/auth-callback/auth-callback.component";
 import { HomeComponent } from "./home/home.component";
 import { SlotMachineComponent } from "./slot-machine/slot-machine.component";
 import { TitleBarComponent } from "./title-bar/title-bar.component";
@@ -14,5 +13,4 @@ export const CORE_COMPONENTS = [
     HomeComponent,
     MainActionsComponent,
     SlotMachineComponent,
-    AuthCallbackComponent,
 ]
