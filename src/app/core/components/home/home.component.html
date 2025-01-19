@@ -2,6 +2,8 @@
     <title-bar></title-bar>
     <div class="content">
         <slot-machine></slot-machine>
-        <main-actions></main-actions>
+        <main-actions
+          (logout)="logout.emit()"
+        ></main-actions>
     </div>
 </div>

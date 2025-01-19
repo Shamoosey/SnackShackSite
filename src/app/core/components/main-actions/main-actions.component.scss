@@ -1,36 +1,29 @@
 @use "variables" as *;
 
 .action-wrapper {
-    .action-list {
-        height: 350px;
-        display: flex;
-        flex-direction: column;
-        h1 {
-            color: $white;
-        }
+  .action-list {
+    height: 350px;
+    display: flex;
+    flex-direction: column;
+    h1 {
+        color: $white;
     }
-    .header {
-        margin-top: 16px;
-        display: flex;
-        flex-direction: row;
-        .item {
-            margin-right: 16px;
-        }
-        .title {
-        }
-        .account-select{
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
-        }
-        .admin-controls {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
-            margin-left: auto;
-        }
+  }
+  .header {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: row;
+    .item {
+      margin-right: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
     }
-    .footer {
+    .admin-controls {
+      margin-left: auto;
+    }
+  }
+  .footer {
 
-    }
+  }
 }

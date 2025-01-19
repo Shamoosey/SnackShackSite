@@ -1,14 +1,16 @@
 @use "variables" as *;
 
 .main-wrapper {
-    height: 100vh;
-    background-color: $shade-white-grey;
-    width: 100%;
-    min-width: 1200px;
-    overflow-x: scroll;
-    .content {
-        display: flex;
-        width: 100%;
-        background-color: $shade-black-ligher;
-    }
+  height: 100vh;
+  background-color: $shade-white-grey;
+  width: 100%;
+  min-width: 1200px;
+  overflow-x: hidden; /* Prevent horizontal overflow */
+  .content {
+    display: grid;
+    grid-template-columns: 400px 1fr;
+    grid-template-rows: 400px auto;
+    gap: 10px;
+    background-color: $shade-black-ligher;
+  }
 }

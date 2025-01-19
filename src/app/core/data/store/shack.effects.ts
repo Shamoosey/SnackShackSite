@@ -35,7 +35,6 @@ export class ShackEffects {
       this.authService.handleAuthCallback(action.code).pipe(
         map(token => {
           if(token){
-            localStorage.setItem('accessToken', token.token)
             return ShackActions.AutenticateUserSuccess({ token: token.token })
           } else {
             return ShackActions.AutenticateUserFailure({ error: "Authentication token is null" })
@@ -47,11 +46,23 @@ export class ShackEffects {
   ));
 
   loginNavigate$ = createEffect(() => this.actions$.pipe(
-      ofType(ShackActions.AutenticateUserSuccess),
+      ofType(
+        ShackActions.AutenticateUserSuccess
+      ),
       tap(() => {
           this.router.navigate(['/']);
       })
     ), { dispatch: false }
+  );
+
+  logoutNavigation$ = createEffect(() => this.actions$.pipe(
+    ofType(
+      ShackActions.LogoutUser, 
+    ),
+    tap(() => {
+        this.router.navigate(['/login']);
+    })
+  ), { dispatch: false }
 );
 
   refreshToken$ = createEffect(() => this.actions$.pipe(

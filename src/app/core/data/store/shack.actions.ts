@@ -8,6 +8,10 @@ export const LoginUserRedirect = createAction(
   '[Shack] Login User Redirect'
 )
 
+export const LogoutUser = createAction(
+  '[Shack] Logout User'
+)
+
 export const AutenticateUser = createAction(
   '[Shack] Authenticate User',
   props<{ code: string }>()

@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { ShackState } from '../../data/store/shack.reducer';
 import { Store } from '@ngrx/store';
+import { ShackActions } from '../../data/store';
 
 @Component({
   selector: 'home-container',
@@ -17,5 +18,9 @@ export class HomeContainer {
 
   ngOnInit(): void {
     
+  }
+
+  logout(){
+    this.store.dispatch(ShackActions.LogoutUser())
   }
 }

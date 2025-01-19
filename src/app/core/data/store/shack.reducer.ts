@@ -16,15 +16,25 @@ const initialState: ShackState = {
 export const shackReducer = createReducer(
   initialState,
   on(ShackActions.AutenticateUserSuccess, (state, { token }) => {
+    localStorage.setItem('accessToken', token)
     return {
       ...state,
       authToken: token
     }
   }),
   on(ShackActions.RefreshTokenSuccess, (state, { token }) => {
+    localStorage.setItem('accessToken', token)
     return {
       ...state,
       authToken: token
+    }
+  }),
+  on(ShackActions.LogoutUser, (state) => {
+    localStorage.removeItem('accessToken')
+    return {
+      ...state,
+      isAuthenticated: false,
+      authToken: null
     }
   })
 )

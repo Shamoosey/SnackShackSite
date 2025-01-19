@@ -17,6 +17,9 @@
             <div class="admin-controls item" *ngIf="isAdminUser">
                 <button mat-flat-button>Admin Controls</button>
             </div>
+            <div class="log-out item">
+              <button mat-flat-button (click)="logoutClick()">Log Out</button>
+          </div>
         </div>
         <div class="content">
             

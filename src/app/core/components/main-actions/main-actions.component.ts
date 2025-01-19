@@ -1,4 +1,4 @@
-import { Component, input, Input } from '@angular/core';
+import { Component, EventEmitter, input, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'main-actions',
@@ -11,9 +11,15 @@ export class MainActionsComponent {
     "Account 1",
     "Account 2",
   ]
-  
 
+  @Output() logout = new EventEmitter<void>()
+  
   get isAdminUser(){
     return true;
+  }
+
+  logoutClick(){
+    console.log("test")
+    this.logout.emit();
   }
 }
