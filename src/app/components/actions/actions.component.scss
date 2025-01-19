@@ -1,17 +1,34 @@
 @use "variables" as *;
 
 .action-wrapper {
-    width: calc(100vh - 500px); //subtract the width of shop
     .action-list {
         height: 350px;
         display: flex;
         flex-direction: column;
-        justify-content: space-evenly;
         h1 {
             color: $white;
         }
     }
-    .item {
+    .header {
+        margin-top: 16px;
+        display: flex;
+        flex-direction: row;
+        .item {
+            margin-right: 16px;
+        }
+        .title {
+        }
+        .account-select{
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+        }
+        .admin-controls {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            margin-left: auto;
+        }
     }
     .footer {
 

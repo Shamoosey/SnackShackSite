@@ -21,16 +21,16 @@
             font-size: 64px;
             flex-direction: column;
             justify-content: space-around;
-            font-family: "balantro";
             
         }
 
         img {
             height: 200px;
             z-index: 2;
+            overflow: hidden; /* Crop overflowing content */
+            position: relative;
             &.right {
-                transform: rotate(20deg) translate(35px, -30px);
-                overflow: hidden;
+                transform: rotate(20deg) translate(25px, -30px);
             }
             &.left {
                 transform: rotate(345deg) translate(-40px, 60px);

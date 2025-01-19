@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input, Input } from '@angular/core';
 
 @Component({
   selector: 'actions',
@@ -7,4 +7,13 @@ import { Component, Input } from '@angular/core';
   styleUrl: './actions.component.scss'
 })
 export class ActionComponent {
+  @Input() Accounts: string[] = [
+    "Account 1",
+    "Account 2",
+  ]
+  
+
+  get isAdminUser(){
+    return true;
+  }
 }

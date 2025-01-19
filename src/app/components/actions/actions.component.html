@@ -1,12 +1,27 @@
 <div class="action-wrapper">
     <div class="action-list">
-        <div class="header item">
-            <h1>Actions</h1>
+        <div class="header">
+            <div class="title item">
+                <h1>Account Actions</h1>
+            </div>
+            <div class="account-select item">
+                <mat-form-field>
+                    <mat-label>Select Account</mat-label>
+                    <mat-select>
+                        @for (acct of Accounts; track acct) {
+                            <mat-option [value]="acct">{{acct}}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="admin-controls item" *ngIf="isAdminUser">
+                <button mat-flat-button>Admin Controls</button>
+            </div>
         </div>
-        <div class="content item">
+        <div class="content">
             
         </div>
-        <div class="footer item">
+        <div class="footer">
     
         </div>
     </div>

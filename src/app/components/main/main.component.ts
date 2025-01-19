@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'main',
@@ -6,5 +6,8 @@ import { Component, Input } from '@angular/core';
   standalone: false,
   styleUrl: './main.component.scss'
 })
-export class MainComponent {
+export class MainComponent implements OnInit{
+
+  ngOnInit(): void {
+  }
 }

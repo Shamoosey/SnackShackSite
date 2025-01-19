@@ -64,6 +64,9 @@ export class SlotMachineComponent implements OnInit {
   
     // Update indexes based on the results of the spin
     deltas.forEach((delta: number, i: number) => {
+      console.log(i)
+      console.log(delta)
+      console.log((this.indexes[i] + delta) % this.num_icons)
       this.indexes[i] = (this.indexes[i] + delta) % this.num_icons;
     });
     this.resultText = this.indexes.map((i) => this.iconMap[i]).join(' - ');

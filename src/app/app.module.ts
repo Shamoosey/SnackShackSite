@@ -12,6 +12,7 @@ import { UserService } from './data/services';
 import { CONTAINERS } from './containers';
 import { MaterialModule } from './material.module';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideAnimations } from '@angular/platform-browser/animations'
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
   ],
   providers: [
     provideHttpClient(withInterceptorsFromDi()),
+    provideAnimations(),
     UserService
   ],
   bootstrap: [AppComponent]
