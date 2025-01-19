@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
-import { DialogComponent, DialogData } from '../dialog/dialog.component';
+import { DialogComponent, DialogData } from '../../../shared/components/dialog/dialog.component';
 
 @Component({
   selector: 'slot-machine',

@@ -1,12 +1,12 @@
 import { Component, input, Input } from '@angular/core';
 
 @Component({
-  selector: 'actions',
-  templateUrl: './actions.component.html',
+  selector: 'main-actions',
+  templateUrl: './main-actions.component.html',
   standalone: false,
-  styleUrl: './actions.component.scss'
+  styleUrl: './main-actions.component.scss'
 })
-export class ActionComponent {
+export class MainActionsComponent {
   @Input() Accounts: string[] = [
     "Account 1",
     "Account 2",
