@@ -1,2 +1,5 @@
 export * from "./User"
 export * from "./UpdateAccountRequest"
+export * from "./UpdateAccountInfoRequest"
+export * from "./BalanceChangeEvent"
+export * from "./Account"

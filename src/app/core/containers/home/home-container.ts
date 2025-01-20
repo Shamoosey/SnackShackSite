@@ -21,7 +21,6 @@ export class HomeContainer implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log("test")
   }
 
   ngOnInit(): void {
@@ -32,7 +31,11 @@ export class HomeContainer implements OnInit, OnChanges {
     this.store.dispatch(ShackActions.LogoutUser())
   }
 
-  accountChange(accountId:string){
+  updateAccountInformation(accountId: string){
+    this.store.dispatch(ShackActions.UpdateAccountInfoOpenDialog({ accountId }))
+  }
+
+  accountSelectionChange(accountId:string){
     this.store.dispatch(ShackActions.SelectedAccountChange({ accountId }))
   }
 

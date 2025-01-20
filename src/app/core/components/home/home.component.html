@@ -9,8 +9,9 @@
           [accounts]="accounts"
           [currentUser]="currentUser"
           [selectedAccount]="selectedAccount"
-          (accountChange)="accountChange.emit($event)"
+          (accountSelectionChange)="accountSelectionChange.emit($event)"
           (refreshSelectedAccount)="refreshSelectedAccount.emit()"
+          (updateAccountInfo)="updateAccountInfo.emit($event)"
           (logout)="logout.emit()"
         ></main-actions>
     </div>

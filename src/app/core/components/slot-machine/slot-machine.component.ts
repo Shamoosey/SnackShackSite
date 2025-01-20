@@ -93,10 +93,9 @@ export class SlotMachineComponent implements OnInit {
     );
     const wager = this.amountControl.value;
     var updateAmount = ((wager ?? 0) * 2)
-    const balanceEvent = {
-      transactionType: TransactionType.Slots
-    } as BalanceChangeEvent
 
+    let notes: string = "Slot Machine" 
+    let amount = -(wager ?? 0);
     // Update indexes based on the results of the spin
     deltas.forEach((delta: number, i: number) => {
       // console.log(i)
@@ -108,8 +107,7 @@ export class SlotMachineComponent implements OnInit {
   
     this.result = this.indexes.map((i) => this.iconMap[i]);
     if (this.indexes[0] == this.indexes[1] && this.indexes[1] == this.indexes[2]) {
-      balanceEvent.notes = "Slot machine win"
-      balanceEvent.amount = updateAmount;
+      amount = updateAmount;
       const winCls = this.indexes[0] === this.indexes[2] ? 'win2' : 'win1';
       const slots = document.querySelector('.slots');
       slots?.classList.add(winCls);
@@ -119,12 +117,14 @@ export class SlotMachineComponent implements OnInit {
       }, 2000);
     } else {
 
-      balanceEvent.amount = -(wager ?? 0);
-      balanceEvent.notes = "Slot machine loss"
       this.rolling = false; // Reset the rolling flag after completion
     }
   
-    this.updateAccountBalance.emit(balanceEvent)
+    this.updateAccountBalance.emit({
+      transactionType: amount > 0 ? TransactionType.BankToAccount : TransactionType.AccountToBank,
+      amount: amount,
+      notes: notes,
+    })
   }
 
   /*

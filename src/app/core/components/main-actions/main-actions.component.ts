@@ -2,6 +2,8 @@ import { Component, EventEmitter, input, Input, OnChanges, OnInit, Output } from
 import { Account } from '../../data/models/Account';
 import { MatSelectChange } from '@angular/material/select';
 import { User } from '../../data/models';
+import { UpdateAccountInfoEvent } from '../../data/models/UpdateAccountInfoEvent';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'main-actions',
@@ -16,12 +18,17 @@ export class MainActionsComponent implements OnInit, OnChanges {
 
   @Output() openAdminPannel = new EventEmitter<void>();
   @Output() logout = new EventEmitter<void>()
-  @Output() accountChange = new EventEmitter<string>();
+  @Output() updateAccountInfo = new EventEmitter<string>();
+  @Output() accountSelectionChange = new EventEmitter<string>();
   @Output() refreshSelectedAccount = new EventEmitter();
   
   get isAdminUser(){
     return this.currentUser?.isAdmin;
   }
+
+  constructor(    
+    private dialog: MatDialog,
+  ) {}
   
   ngOnInit(): void {
     
@@ -30,7 +37,9 @@ export class MainActionsComponent implements OnInit, OnChanges {
   ngOnChanges (){
   }
 
-  editAcountName(){
-    
+  editAccountInfo(){
+    if(this.selectedAccount){
+      this.updateAccountInfo.emit(this.selectedAccount.accountId)
+    }
   }
 }

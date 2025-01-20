@@ -7,21 +7,29 @@
             <div class="account-select item">
                 <mat-form-field>
                     <mat-label>Select Account</mat-label>
-                    <mat-select (selectionChange)="accountChange.emit($event.value)">
+                    <mat-select (selectionChange)="accountSelectionChange.emit($event.value)">
                         @for (acct of accounts; track acct) {
                             <mat-option [value]="acct.accountId">{{acct.accountName}} - {{acct.currencyCode}}</mat-option>
                         }
                     </mat-select>
                 </mat-form-field>
             </div>
+            <div class="edit item">
+              <button 
+                *ngIf="selectedAccount" 
+                mat-flat-button 
+                (click)="editAccountInfo()"
+                >Edit
+              </button>
+            </div>
             <div class="refresh item">
               <button 
-              mat-icon-button
-              (click)="refreshSelectedAccount.emit()" 
-              class="refresh">
-              <mat-icon>refresh</mat-icon>
-            </button>
-          </div>
+                mat-icon-button
+                (click)="refreshSelectedAccount.emit()" 
+                class="refresh">
+                <mat-icon>refresh</mat-icon>
+              </button>
+            </div>
             <div class="admin-controls item" *ngIf="isAdminUser">
                 <button mat-flat-button (click)="openAdminPannel.emit()">Admin Controls</button>
             </div>
@@ -32,7 +40,6 @@
         <div class="content">
           <div class="account-name item">
             <div class="title">Account Name:</div>
-            <div class="edit"><button mat-flat-button *ngIf="selectedAccount" (click)="editAcountName()">Edit</button></div>
             <div class="value">{{selectedAccount?.accountName}}</div>
           </div>
           <div class="current-balance item">

@@ -26,6 +26,16 @@
       margin-left: 32px;
       width: 350px;
     }
+    .edit {
+      width: 100px;
+      button {
+        height: 30px;
+        &.mat-mdc-button-disabled {
+          background-color: $shade-white-grey;
+          opacity: .3;
+        }
+      }
+    }
     .refresh {      
       margin-right: auto;
       mat-icon {
@@ -46,34 +56,19 @@
       color: white;
       letter-spacing: 1px;
       margin-bottom: 8px;
-      width: 600px;
+      width: 500px;
       .title {
         font-size: 20px;
-        width: 400px;
+        width: 250px;
         color: $color-gray-500
         // margin-right: 16px;
       }
       .value {
-        width: 300px;
+        width: 350px;
         font-size: 20px;
         white-space: nowrap; 
         overflow: hidden;
         text-overflow: ellipsis;
-      }
-      &.account-name{
-        .title {
-          width: 300px;
-        }
-        .edit {
-          width: 100px;
-          button {
-            height: 30px;
-            &.mat-mdc-button-disabled {
-              background-color: $shade-white-grey;
-              opacity: .3;
-            }
-          }
-        }
       }
     }
   }

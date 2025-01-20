@@ -15,8 +15,9 @@ export class HomeComponent implements OnInit{
   @Input() currentUser: User | null = null;
   
   @Output() logout = new EventEmitter<void>()
-  @Output() accountChange = new EventEmitter<string>();
+  @Output() accountSelectionChange = new EventEmitter<string>();
   @Output() updateAccountBalance = new EventEmitter<BalanceChangeEvent>();
+  @Output() updateAccountInfo = new EventEmitter<string>();
   @Output() refreshSelectedAccount = new EventEmitter();
 
   ngOnInit(): void {

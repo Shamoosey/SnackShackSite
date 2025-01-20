@@ -8,6 +8,8 @@ import * as fromRouter from '@ngrx/router-store';
 import * as ShackActions from "./shack.actions";
 import { Router } from "@angular/router";
 import { ShackSelectors } from ".";
+import { MatDialog } from "@angular/material/dialog";
+import { InputDialogResult, UpdateAccountInfoDialogComponent, UpdateAccountInfoDialogData } from "../../../shared/components";
 
 @Injectable()
 export class ShackEffects {
@@ -19,7 +21,8 @@ export class ShackEffects {
     private router: Router,
     private userService: UserService,
     private authService: AuthService,
-    private accountService: AccountService
+    private accountService: AccountService,
+    private dialog: MatDialog
 
   ) {}
 
@@ -85,11 +88,69 @@ export class ShackEffects {
     )
   ))
 
+  
+  updateAccountInfo$ = createEffect(() => this.actions$.pipe(
+    ofType(
+      ShackActions.UpdateAccountInfoOpenDialog
+    ),
+    withLatestFrom(
+      this.store.select(ShackSelectors.getUserAccounts)
+    ),
+    switchMap(([action, accounts]) => {
+        // Open the dialog
+        let editedAcct = accounts.find(acct => acct.accountId === action.accountId);
+        if(editedAcct) {
+          const dialogRef = this.dialog.open(UpdateAccountInfoDialogComponent, {
+            data: { 
+              accountName: editedAcct.accountName,
+              currencyCode: editedAcct.currencyCode 
+            } as UpdateAccountInfoDialogData
+          });
+
+          return dialogRef.afterClosed().pipe(
+            switchMap((result: InputDialogResult) => {
+              if(result.primaryButtonClicked && result.inputResult){
+                return of(ShackActions.UpdateAccountInfoOpenDialogSuccess({ accountId: action.accountId, data: result.inputResult }));
+              } else {
+                return of(ShackActions.UpdateAccountInfoOpenDialogFailure({error: "Unable to update account info"}));
+              }
+            }),
+            catchError((error: any) => of(ShackActions.UpdateAccountInfoOpenDialogFailure({error: "Unable to update account info"})))
+          );
+        } else {
+          return of(ShackActions.UpdateAccountInfoOpenDialogFailure({error: "Unable to update account info, can't find account"}));
+        }
+      }
+    )
+  ));
+
+  updateAccountInfoRequest$ = createEffect(() => this.actions$.pipe(
+    ofType(
+      ShackActions.UpdateAccountInfoOpenDialogSuccess
+    ),
+    withLatestFrom(
+      this.store.select(ShackSelectors.getUserAccounts)
+    ),
+    switchMap(([action, accounts]) => {
+        let editedAcct = accounts.find(acct => acct.accountId === action.accountId);
+        if(editedAcct) {
+          return this.accountService.updateAccountInfo(action.accountId, action.data).pipe(
+            map(() => ShackActions.UpdateAccountInfoRequestSuccess()),
+            catchError(() => of(ShackActions.UpdateAccountInfoRequestFailure({error: "Unable to update user account"})))
+          )
+        } else {
+          return of(ShackActions.UpdateAccountInfoRequestFailure({error: "Unable to update account info, can't find account"}))
+        }
+      }
+    )
+  ))
+
   getUserAccounts$ = createEffect(() => this.actions$.pipe(
     ofType(
       ShackActions.GetCurrentUserSuccess,
       ShackActions.UpdateAmountBalanceSuccess,
-      ShackActions.GetUserAccounts
+      ShackActions.GetUserAccounts,
+      ShackActions.UpdateAccountInfoRequestSuccess
     ),
     withLatestFrom(this.store.select(ShackSelectors.getCurrentUser)),
     switchMap(([action, user]) => {

@@ -1,8 +1,9 @@
 import { createAction, props } from "@ngrx/store";
-import { UpdateAccountRequest, User } from "../models";
+import { UpdateAccountInfoRequest, UpdateAccountRequest, User } from "../models";
 import { Account } from "../models/Account";
 import { BalanceChangeEvent } from "../models/BalanceChangeEvent";
 
+//#region User Actions
 export const LoginUser = createAction(
   '[Shack] Login User'
 )
@@ -28,6 +29,8 @@ export const GetCurrentUserFailure = createAction(
   '[Shack] Get Current User Failure',
   props<{error: string}>()
 )
+//#endregion
+//#region Account Actions
 
 export const GetUserAccounts = createAction(
   '[Shack] Get User Accounts'
@@ -62,7 +65,31 @@ export const UpdateAmountBalanceFailure = createAction(
   props<{ error: string }>()
 )
 
-//#region Auth
+export const UpdateAccountInfoOpenDialog = createAction(
+  '[Shack] - Update Account Info Open Dialog',
+  props<{ accountId: string }>()
+)
+
+export const UpdateAccountInfoOpenDialogSuccess = createAction(
+  '[Shack] - Update Account Info Open Dialog Success',
+  props<{ accountId: string, data: UpdateAccountInfoRequest }>()
+)
+
+export const UpdateAccountInfoOpenDialogFailure = createAction(
+  '[Shack] - Update Account Info Open Dialog Failure',
+  props<{ error: string }>()
+)
+
+export const UpdateAccountInfoRequestSuccess = createAction(
+  '[Shack] - Update Account Info Request Success'
+)
+
+export const UpdateAccountInfoRequestFailure = createAction(
+  '[Shack] - Update Account Info Request Failure',
+  props<{ error: string }>()
+)
+//#endregion
+//#region Auth Actions
 export const AutenticateUser = createAction(
   '[Shack] Authenticate User',
   props<{ code: string }>()
