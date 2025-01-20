@@ -5,16 +5,36 @@ $icon_height: 79px;
 $num_icons: 9;
 
 .slot-wrapper {
-    margin: 24px;
     display: flex;
     flex-direction: column;
-    height: 350px;
+    height: 550px;
+    margin-top: 16px;
     .actions {
         margin-top: 16px;
+        margin: 8px;
         display: flex;
+        flex-direction: column;
         justify-content: space-between;
+        .row {
+          display: flex;
+          align-items: center;
+          .action-item {
+            .wager-amount {
+              border-radius: 5px;
+              font-size: 24px;
+              background-color: $shade-white-grey;
+              ::ng-deep .mat-mdc-form-field-bottom-align{
+                display: none;
+              }
+            }
+          }
+        }
         button.roll {
             border-radius: 5px;
+            &.mat-mdc-button-disabled {
+              background-color: $shade-white-grey;
+              opacity: .3;
+            }
         }
         span {
             color: $white;
@@ -28,7 +48,6 @@ $num_icons: 9;
     .slots {
         margin: 8px;
         position: relative;
-        width: 3.5 * $icon_width;
         height: 3 * $icon_height;
         display: flex;
         justify-content: space-between;

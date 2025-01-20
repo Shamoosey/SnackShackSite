@@ -1,27 +1,43 @@
 
 <div class="slot-wrapper">
-    <div class="moving-border">
+  <div class="moving-border">
+    <div class="slot-game">
         <div class="slots">
             <div class="reel"></div>
             <div class="reel"></div>
             <div class="reel"></div>
         </div>
     </div>
-    <div class="actions">
+  </div>
+  <div class="actions">
+    <div class="row">
+      <div class="action-item">
+        <mat-form-field class="wager-amount">
+          <mat-label>Wager Amount</mat-label>
+          <input matInput placeholder="Wager" type="number" [formControl]="amountControl" [disabled]="!enableInputs" required>
+        </mat-form-field>
+      </div>
+      <div class="action-item">
         <button 
-            mat-flat-button 
-            color="primary" 
-            (click)="rollClick()" 
-            [disabled]="rolling"
-            class="roll"
-            >ROLL
+          mat-icon-button
+          (click)="infoClick()" 
+          class="info">
+          <mat-icon>info_outline</mat-icon>
         </button>
-        <span>{{resultText}}</span>
+      </div>
+      <div class="action-item">
         <button 
-            mat-icon-button
-            (click)="infoClick()" 
-            class="info">
-            <mat-icon>info_outline</mat-icon>
+          mat-flat-button 
+          color="primary" 
+          (click)="rollClick()" 
+          [disabled]="!enableRollButton"
+          class="roll"
+          >ROLL
         </button>
+      </div>
     </div>
+    <div class="row">
+      <span>{{resultText}}</span>
+    </div>
+  </div>
 </div>

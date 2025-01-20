@@ -1,3 +1,8 @@
 <app-home
+  [accounts]="(userAccounts$ | async) != null ? $any(userAccounts$ | async) : []"
+  [selectedAccount]="(selectedAccount$ | async)"
+  (accountChange)="accountChange($event)"
   (logout)="logout()"
+  (updateAccountBalance)="updateAccountBalance($event)"
+  (refreshSelectedAccount)="refreshSelectedAccount()"
 ></app-home>

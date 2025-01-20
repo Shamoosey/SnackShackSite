@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CORE_COMPONENTS } from './components';
 import { CommonModule } from '@angular/common';
@@ -29,6 +29,7 @@ import { TokenInterceptor } from './data/interceptors/TokenInterceptor';
     ReactiveFormsModule,
     BrowserModule,
     MaterialModule,
+    FormsModule,
     RouterModule,
     SharedModule,
     CommonModule,

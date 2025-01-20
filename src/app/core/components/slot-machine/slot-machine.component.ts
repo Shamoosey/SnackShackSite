@@ -1,7 +1,11 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Subject } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent, DialogData } from '../../../shared/components/dialog/dialog.component';
+import { Account } from '../../data/models/Account';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { BalanceChangeEvent } from '../../data/models/BalanceChangeEvent';
+import { TransactionType } from '../../data/models/Enums/TransactionType';
 
 @Component({
   selector: 'slot-machine',
@@ -10,10 +14,32 @@ import { DialogComponent, DialogData } from '../../../shared/components/dialog/d
   styleUrl: './slot-machine.component.scss'
 })
 export class SlotMachineComponent implements OnInit {
+  @Input() selectedAccount: Account | null = null;
+
+  @Output() updateAccountBalance = new EventEmitter<BalanceChangeEvent>(); //return the amount to add/subtract
+
   resultText = ""
   
+  amountControl = new FormControl<number>(1, [Validators.min(1), Validators.max(10)]) // fix validator
+
+
+  get enableInputs() {
+    return (this.selectedAccount != null && this.selectedAccount.amount > 0) && !this.rolling;
+  }
+
+  get enableRollButton(){
+    return (
+      this.selectedAccount != null && 
+      this.selectedAccount.amount > 0
+    ) && 
+    !this.rolling && 
+    this.amountControl.valid &&
+    (this.selectedAccount.amount - (this.amountControl.value ?? 0) >= 0)
+  }
+  
   constructor(
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private fb: FormBuilder
   ){
 
   }
@@ -34,7 +60,7 @@ export class SlotMachineComponent implements OnInit {
   indexes = [0, 0, 0];
   
   async ngOnInit(): Promise<void> {
-
+    this.amountControl = new FormControl<number>(1, [Validators.min(1), Validators.max(10)]) // fix validator
   }
 
   infoClick(){
@@ -48,7 +74,7 @@ export class SlotMachineComponent implements OnInit {
   }
 
   async rollClick():Promise<void>{
-    if (this.rolling) {
+    if (this.rolling || !this.selectedAccount) {
       // Prevent multiple spins while a roll is in progress
       return;
     }
@@ -61,18 +87,25 @@ export class SlotMachineComponent implements OnInit {
     const deltas = await Promise.all(
       [...reelsList].map((reel, i) => this.roll(reel as HTMLElement, i))
     );
-  
+    const wager = this.amountControl.value;
+    var updateAmount = ((wager ?? 0) * 2)
+    const balanceEvent = {
+      transactionType: TransactionType.Slots
+    } as BalanceChangeEvent
+
     // Update indexes based on the results of the spin
     deltas.forEach((delta: number, i: number) => {
-      console.log(i)
-      console.log(delta)
-      console.log((this.indexes[i] + delta) % this.num_icons)
+      // console.log(i)
+      // console.log(delta)
+      // console.log((this.indexes[i] + delta) % this.num_icons)
       this.indexes[i] = (this.indexes[i] + delta) % this.num_icons;
     });
     this.resultText = this.indexes.map((i) => this.iconMap[i]).join(' - ');
   
     this.result = this.indexes.map((i) => this.iconMap[i]);
     if (this.indexes[0] == this.indexes[1] && this.indexes[1] == this.indexes[2]) {
+      balanceEvent.notes = "Slot machine win"
+      balanceEvent.amount = updateAmount;
       const winCls = this.indexes[0] === this.indexes[2] ? 'win2' : 'win1';
       const slots = document.querySelector('.slots');
       slots?.classList.add(winCls);
@@ -81,11 +114,13 @@ export class SlotMachineComponent implements OnInit {
         slots?.classList.remove(winCls)
       }, 2000);
     } else {
+
+      balanceEvent.amount = -(wager ?? 0);
+      balanceEvent.notes = "Slot machine loss"
       this.rolling = false; // Reset the rolling flag after completion
     }
   
-
-    console.log(this.result)
+    this.updateAccountBalance.emit(balanceEvent)
   }
 
   /*

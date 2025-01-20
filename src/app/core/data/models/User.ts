@@ -1,7 +1,5 @@
 export interface User {
-    Id: string,
-    Username: string,
-    Email: string,
-
-    // Accounts:Array<Account>
+    id: string,
+    username: string,
+    email: string,
 }

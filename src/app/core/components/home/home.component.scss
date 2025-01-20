@@ -2,15 +2,15 @@
 
 .main-wrapper {
   height: 100vh;
-  background-color: $shade-white-grey;
   width: 100%;
   min-width: 1200px;
   overflow-x: hidden; /* Prevent horizontal overflow */
+
   .content {
+    height: auto;
     display: grid;
     grid-template-columns: 400px 1fr;
-    grid-template-rows: 400px auto;
     gap: 10px;
-    background-color: $shade-black-ligher;
+    background-color: $shade-black-light;
   }
 }

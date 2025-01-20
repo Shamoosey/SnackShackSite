@@ -1,12 +1,13 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { catchError, map, withLatestFrom, of, switchMap, concatMap, mergeMap, tap} from "rxjs";
+import { catchError, map, withLatestFrom, of, switchMap, concatMap, mergeMap, tap, filter} from "rxjs";
 import { Store, select } from "@ngrx/store";
 import { ShackState } from "./shack.reducer";
-import { AuthService, UserService } from "../services";
+import { AccountService, AuthService, UserService } from "../services";
 import * as fromRouter from '@ngrx/router-store';
 import * as ShackActions from "./shack.actions";
 import { Router } from "@angular/router";
+import { ShackSelectors } from ".";
 
 @Injectable()
 export class ShackEffects {
@@ -17,7 +18,8 @@ export class ShackEffects {
     private actions$: Actions,
     private router: Router,
     private userService: UserService,
-    private authService: AuthService
+    private authService: AuthService,
+    private accountService: AccountService
 
   ) {}
 
@@ -45,32 +47,101 @@ export class ShackEffects {
     )
   ));
 
+  getCurrentUser$ = createEffect(() => this.actions$.pipe(
+    ofType(
+      ShackActions.GetCurrentUser,
+    ),
+    switchMap(action => 
+      this.userService.getCurrentUser().pipe(
+        map(user => ShackActions.GetCurrentUserSuccess({ user })),
+        catchError(error => of(ShackActions.GetCurrentUserFailure({ error: error.message })))
+      )
+    )
+  ));
+
+  updateAmountBalance$ = createEffect(() => this.actions$.pipe(
+    ofType(
+      ShackActions.UpdateAmountBalance
+    ),
+    withLatestFrom(
+      this.store.select(ShackSelectors.getCurrentUser),
+      this.store.select(ShackSelectors.getSelectedAccount)),
+    switchMap(([action, user, account]) => {
+      if(user && account){
+        return this.accountService.updateAccountBalance({
+          accountId: account.accountId,
+          userId: user.id,
+          amount: action.data.amount,
+          notes: action.data.notes,
+          transactionType: action.data.transactionType
+        }).pipe(
+          map(result => ShackActions.UpdateAmountBalanceSuccess()),
+          catchError(error => of(ShackActions.UpdateAmountBalanceFailure({error: "Unable to update user account"})))
+        )
+      } else {
+        return of(ShackActions.UpdateAmountBalanceFailure({error: "Unable to update user account"}))
+      }
+    }
+    )
+  ))
+
+  getUserAccounts$ = createEffect(() => this.actions$.pipe(
+    ofType(
+      ShackActions.GetCurrentUserSuccess,
+      ShackActions.UpdateAmountBalanceSuccess,
+      ShackActions.GetUserAccounts
+    ),
+    withLatestFrom(this.store.select(ShackSelectors.getCurrentUser)),
+    switchMap(([action, user]) => {
+      if(user){
+        return this.accountService.getUserAccounts(user.id).pipe(
+          map(accounts => ShackActions.GetUserAccountsSuccess({ accounts })),
+          catchError(error => of(ShackActions.GetUserAccountsFailure({ error: error.message })))
+        )
+      } else {
+        return of(ShackActions.GetUserAccountsFailure({ error: "User is null" }))
+      }
+    })
+  ));
+
   loginNavigate$ = createEffect(() => this.actions$.pipe(
+    ofType(
+      ShackActions.AutenticateUserSuccess,
+      ShackActions.RefreshTokenSuccess
+    ),
+    withLatestFrom(this.store.pipe(select(ShackSelectors.getIsRefreshingToken))),
+    filter(([action, isRefreshing]) => !isRefreshing), // Prevent navigation if token is being refreshed
+    tap(() => {
+      const accessToken = localStorage.getItem('accessToken');
+      if (accessToken) {
+        this.router.navigate(['/']);
+      }
+    })
+  ), { dispatch: false });
+
+  logoutNavigation$ = createEffect(() => this.actions$.pipe(
       ofType(
-        ShackActions.AutenticateUserSuccess
+        ShackActions.LogoutUser, 
       ),
       tap(() => {
-          this.router.navigate(['/']);
+          this.router.navigate(['/login']);
       })
     ), { dispatch: false }
   );
 
-  logoutNavigation$ = createEffect(() => this.actions$.pipe(
-    ofType(
-      ShackActions.LogoutUser, 
-    ),
-    tap(() => {
-        this.router.navigate(['/login']);
-    })
-  ), { dispatch: false }
-);
-
   refreshToken$ = createEffect(() => this.actions$.pipe(
     ofType(ShackActions.RefreshToken),
+    tap(() => this.store.dispatch(ShackActions.SetRefreshingToken({ value: true }))),
     switchMap(() =>
       this.authService.refreshAccessToken().pipe(
-        map((newToken) => ShackActions.RefreshTokenSuccess({ token: newToken.accessToken })),
-        catchError((error) => of(ShackActions.RefreshTokenFailure({ error })))
+        map((newToken) => {
+          this.store.dispatch(ShackActions.SetRefreshingToken({ value: false }));
+          return ShackActions.RefreshTokenSuccess({ token: newToken.accessToken });
+        }),
+        catchError((error) => {
+          this.store.dispatch(ShackActions.SetRefreshingToken({ value: false }));
+          return of(ShackActions.RefreshTokenFailure({ error }));
+        })
       )
     )
   ));

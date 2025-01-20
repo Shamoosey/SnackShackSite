@@ -2,27 +2,47 @@
     <div class="action-list">
         <div class="header">
             <div class="title item">
-                <h1>Account Actions</h1>
+                <h1>Account Infomation</h1>
             </div>
             <div class="account-select item">
                 <mat-form-field>
                     <mat-label>Select Account</mat-label>
-                    <mat-select>
-                        @for (acct of Accounts; track acct) {
-                            <mat-option [value]="acct">{{acct}}</mat-option>
+                    <mat-select (selectionChange)="accountChange.emit($event.value)">
+                        @for (acct of accounts; track acct) {
+                            <mat-option [value]="acct.accountId">{{acct.accountName}} - {{acct.currencyCode}}</mat-option>
                         }
                     </mat-select>
                 </mat-form-field>
             </div>
+            <div class="refresh item">
+              <button 
+              mat-icon-button
+              (click)="refreshSelectedAccount.emit()" 
+              class="refresh">
+              <mat-icon>refresh</mat-icon>
+            </button>
+          </div>
             <div class="admin-controls item" *ngIf="isAdminUser">
-                <button mat-flat-button>Admin Controls</button>
+                <button mat-flat-button (click)="openAdminPannel.emit()">Admin Controls</button>
             </div>
             <div class="log-out item">
-              <button mat-flat-button (click)="logoutClick()">Log Out</button>
+              <button mat-flat-button (click)="logout.emit()">Log Out</button>
           </div>
         </div>
         <div class="content">
-            
+          <div class="account-name item">
+            <div class="title">Account Name:</div>
+            <div class="edit"><button mat-flat-button *ngIf="selectedAccount" (click)="editAcountName()">Edit</button></div>
+            <div class="value">{{selectedAccount?.accountName}}</div>
+          </div>
+          <div class="current-balance item">
+            <div class="title">Current Balance:</div>
+            <div class="value">{{selectedAccount?.amount}}</div>
+          </div>
+          <div class="currency item">
+            <div class="title">Currency:</div>
+            <div class="value">{{selectedAccount?.currencyCode}}</div>
+          </div>
         </div>
         <div class="footer">
     

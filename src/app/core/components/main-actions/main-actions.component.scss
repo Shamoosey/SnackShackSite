@@ -2,11 +2,11 @@
 
 .action-wrapper {
   .action-list {
-    height: 350px;
+    height: 550px;
     display: flex;
     flex-direction: column;
     h1 {
-        color: $white;
+        color: $color-gray-200
     }
   }
   .header {
@@ -21,6 +21,59 @@
     }
     .admin-controls {
       margin-left: auto;
+    }
+    .account-select {
+      margin-left: auto;
+      width: 350px;
+    }
+    .refresh {      
+      mat-icon {
+        cursor: pointer;
+        color: $white;
+        height: unset;
+        width: unset;
+        font-size: 32px;
+        &:hover {
+          color: $color-gray-500;
+        }
+      }
+    }
+  }
+  .content {
+    .item {
+      display: flex;
+      color: white;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+      width: 600px;
+      .title {
+        font-size: 20px;
+        width: 400px;
+        color: $color-gray-500
+        // margin-right: 16px;
+      }
+      .value {
+        width: 300px;
+        font-size: 20px;
+        white-space: nowrap; 
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      &.account-name{
+        .title {
+          width: 300px;
+        }
+        .edit {
+          width: 100px;
+          button {
+            height: 30px;
+            &.mat-mdc-button-disabled {
+              background-color: $shade-white-grey;
+              opacity: .3;
+            }
+          }
+        }
+      }
     }
   }
   .footer {

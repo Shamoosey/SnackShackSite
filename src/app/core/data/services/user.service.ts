@@ -11,6 +11,10 @@ export class UserService {
   ) {}
 
   getUsers(configId: string):Observable<User[]> {
-    return this.http.get<User[]>(`${environment.configurationServiceUrl}/User/GetAll?configId=${configId}`)
+    return this.http.get<User[]>(`${environment.apiUrl}/User/GetAll?configId=${configId}`)
+  }
+
+  getCurrentUser(){
+    return this.http.get<User>(`${environment.apiUrl}/api/User/me`)
   }
 }

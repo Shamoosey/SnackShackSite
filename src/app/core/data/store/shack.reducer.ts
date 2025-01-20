@@ -1,16 +1,26 @@
 import { Action, createReducer, on } from "@ngrx/store";
 import * as ShackActions from "./shack.actions"
+import { User } from "../models";
+import { Account } from "../models/Account";
 
 export const SHACK_FEATURE_KEY = "shack"
 
 export interface ShackState {
   isAuthenticated: boolean,
+  currentUser: User | null,
   authToken: string | null
+  userAccounts: Account[],
+  selectedAccount: Account | null;
+  isRefreshingToken: boolean;
 }
 
 const initialState: ShackState = {
+  currentUser: null,
   isAuthenticated: false,
-  authToken: null
+  authToken: null,
+  userAccounts: [],
+  selectedAccount: null,
+  isRefreshingToken: false
 };
 
 export const shackReducer = createReducer(
@@ -22,19 +32,51 @@ export const shackReducer = createReducer(
       authToken: token
     }
   }),
+
+  on(ShackActions.SetRefreshingToken, (state, { value }) => {
+    return {
+      ...state,
+      isRefreshingToken: value
+    }
+  }),
   on(ShackActions.RefreshTokenSuccess, (state, { token }) => {
     localStorage.setItem('accessToken', token)
     return {
       ...state,
-      authToken: token
+      authToken: token,
+      isRefreshingToken: false
     }
   }),
   on(ShackActions.LogoutUser, (state) => {
     localStorage.removeItem('accessToken')
     return {
+      ...initialState
+    }
+  }),
+  on(ShackActions.GetCurrentUserSuccess, (state, { user }) => {
+    return {
       ...state,
-      isAuthenticated: false,
-      authToken: null
+      currentUser: user
+    }
+  }),
+  on(ShackActions.GetUserAccounts, (state) => {
+    return {
+      ...state,
+      userAccounts: [],
+    }
+  }),
+  on(ShackActions.GetUserAccountsSuccess, (state, { accounts }) => {
+    return {
+      ...state,
+      userAccounts: accounts,
+      selectedAccount: accounts.find(x => x.accountId == state.selectedAccount?.accountId) ?? null
+    }
+  }),
+  on(ShackActions.SelectedAccountChange, (state, { accountId }) => {
+    const account = state.userAccounts.find(x => x.accountId == accountId);
+    return {
+      ...state,
+      selectedAccount: account ?? null
     }
   })
 )

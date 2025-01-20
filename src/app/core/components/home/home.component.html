@@ -1,8 +1,15 @@
 <div class="main-wrapper">
     <title-bar></title-bar>
     <div class="content">
-        <slot-machine></slot-machine>
+        <slot-machine
+          [selectedAccount]="selectedAccount"
+          (updateAccountBalance)="updateAccountBalance.emit($event)"
+        ></slot-machine>
         <main-actions
+          [accounts]="accounts"
+          [selectedAccount]="selectedAccount"
+          (accountChange)="accountChange.emit($event)"
+          (refreshSelectedAccount)="refreshSelectedAccount.emit()"
           (logout)="logout.emit()"
         ></main-actions>
     </div>
