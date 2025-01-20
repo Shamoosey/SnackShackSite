@@ -1,6 +1,7 @@
 import { Component, EventEmitter, input, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { Account } from '../../data/models/Account';
 import { MatSelectChange } from '@angular/material/select';
+import { User } from '../../data/models';
 
 @Component({
   selector: 'main-actions',
@@ -9,6 +10,7 @@ import { MatSelectChange } from '@angular/material/select';
   styleUrl: './main-actions.component.scss'
 })
 export class MainActionsComponent implements OnInit, OnChanges {
+  @Input() currentUser: User | null = null;
   @Input() accounts: Account[] = []
   @Input() selectedAccount: Account | null = null;
 
@@ -18,7 +20,7 @@ export class MainActionsComponent implements OnInit, OnChanges {
   @Output() refreshSelectedAccount = new EventEmitter();
   
   get isAdminUser(){
-    return true;
+    return this.currentUser?.isAdmin;
   }
   
   ngOnInit(): void {

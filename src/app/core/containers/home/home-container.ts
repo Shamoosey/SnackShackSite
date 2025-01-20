@@ -12,6 +12,7 @@ import { BalanceChangeEvent } from '../../data/models/BalanceChangeEvent';
 export class HomeContainer implements OnInit, OnChanges {
   userAccounts$ = this.store.select(ShackSelectors.getUserAccounts);
   selectedAccount$ = this.store.select(ShackSelectors.getSelectedAccount);
+  currentUser$ = this.store.select(ShackSelectors.getCurrentUser)
 
   constructor(
     private store: Store<ShackState>

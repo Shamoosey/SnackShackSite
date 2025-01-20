@@ -7,6 +7,7 @@
         ></slot-machine>
         <main-actions
           [accounts]="accounts"
+          [currentUser]="currentUser"
           [selectedAccount]="selectedAccount"
           (accountChange)="accountChange.emit($event)"
           (refreshSelectedAccount)="refreshSelectedAccount.emit()"

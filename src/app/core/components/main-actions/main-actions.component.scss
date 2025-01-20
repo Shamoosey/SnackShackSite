@@ -23,10 +23,11 @@
       margin-left: auto;
     }
     .account-select {
-      margin-left: auto;
+      margin-left: 32px;
       width: 350px;
     }
     .refresh {      
+      margin-right: auto;
       mat-icon {
         cursor: pointer;
         color: $white;
