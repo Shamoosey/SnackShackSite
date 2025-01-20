@@ -20,15 +20,13 @@ export class SlotMachineComponent implements OnInit {
 
   resultText = ""
   
-  amountControl = new FormControl<number>({value: 1, disabled: !this.enableInputs}, [Validators.min(1), Validators.max(10)]) // fix validator
-
+  amountControl = new FormControl<number>(1, [Validators.min(1), Validators.max(10)]) // fix validator
 
   get enableInputs() {
     return (
       this.selectedAccount != null && 
       this.selectedAccount.amount > 0
-    ) && 
-    !this.rolling;
+    ) && !this.rolling;
   }
 
   get enableRollButton(){
@@ -64,7 +62,7 @@ export class SlotMachineComponent implements OnInit {
   indexes = [0, 0, 0];
   
   async ngOnInit(): Promise<void> {
-    this.amountControl = new FormControl<number>({value: 1, disabled: !this.enableInputs}, [Validators.min(1), Validators.max(10)]) // fix validator
+    this.amountControl = new FormControl<number>(1, [Validators.min(1), Validators.max(10)]) // fix validator
   }
 
   infoClick(){
