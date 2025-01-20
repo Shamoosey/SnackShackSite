@@ -22,6 +22,6 @@ export class AuthService {
   }
 
   refreshAccessToken() {
-    return this.http.post<{ accessToken: string }>(`${this.apiUrl}/refresh-token`, {}, { withCredentials: true });
+    return this.http.post<{ token: string }>(`${this.apiUrl}/refresh-token`, {}, { withCredentials: true });
   }
 }

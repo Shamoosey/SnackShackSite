@@ -193,11 +193,15 @@ export class ShackEffects {
   refreshToken$ = createEffect(() => this.actions$.pipe(
     ofType(ShackActions.RefreshToken),
     tap(() => this.store.dispatch(ShackActions.SetRefreshingToken({ value: true }))),
-    switchMap(() =>
+    concatMap(() =>
       this.authService.refreshAccessToken().pipe(
-        map((newToken) => {
+        concatMap((newToken) => {
           this.store.dispatch(ShackActions.SetRefreshingToken({ value: false }));
-          return ShackActions.RefreshTokenSuccess({ token: newToken.accessToken });
+          localStorage.setItem('accessToken', newToken.token); // Ensure token is set
+          return [
+            ShackActions.RefreshTokenSuccess({ token: newToken.token }),
+            ShackActions.GetCurrentUser()
+          ];
         }),
         catchError((error) => {
           this.store.dispatch(ShackActions.SetRefreshingToken({ value: false }));
