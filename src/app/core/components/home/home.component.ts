@@ -19,6 +19,7 @@ export class HomeComponent implements OnInit{
   @Output() updateAccountBalance = new EventEmitter<BalanceChangeEvent>();
   @Output() updateAccountInfo = new EventEmitter<string>();
   @Output() refreshSelectedAccount = new EventEmitter();
+  @Output() transferFunds = new EventEmitter<void>();
 
   ngOnInit(): void {
   }

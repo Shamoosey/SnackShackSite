@@ -4,6 +4,7 @@ import { environment } from "../../../../environments/environment";
 import { Account } from "../models/Account";
 import { UpdateAccountRequest } from "../models/UpdateAccountRequest";
 import { UpdateAccountInfoRequest } from "../models";
+import { TransferAccountRequest } from "../models/TransferAccountRequest";
 
 @Injectable()
 export class AccountService {
@@ -21,5 +22,9 @@ export class AccountService {
 
   updateAccountBalance(request: UpdateAccountRequest){
     return this.http.post<boolean>(`${environment.apiUrl}/api/account/UpdateAccountBalance`, request)
+  }
+
+  transferFunds(request: TransferAccountRequest){
+    return this.http.put<boolean>(`${environment.apiUrl}/api/account/TransferFunds`, request)
   }
 }

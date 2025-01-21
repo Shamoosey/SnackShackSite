@@ -24,6 +24,7 @@ export class HomeContainer implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
+    this.store.dispatch(ShackActions.GetExchangeRates())
     this.store.dispatch(ShackActions.GetCurrentUser())
   }
 
@@ -37,6 +38,10 @@ export class HomeContainer implements OnInit, OnChanges {
 
   accountSelectionChange(accountId:string){
     this.store.dispatch(ShackActions.SelectedAccountChange({ accountId }))
+  }
+
+  transferFunds(){
+    this.store.dispatch(ShackActions.OpenTransferFundsDialog())
   }
 
   updateAccountBalance(event: BalanceChangeEvent){

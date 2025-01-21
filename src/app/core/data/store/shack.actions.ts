@@ -2,6 +2,8 @@ import { createAction, props } from "@ngrx/store";
 import { UpdateAccountInfoRequest, UpdateAccountRequest, User } from "../models";
 import { Account } from "../models/Account";
 import { BalanceChangeEvent } from "../models/BalanceChangeEvent";
+import { TransferAccountRequest } from "../models/TransferAccountRequest";
+import { ExchangeRate } from "../models/ExchangeRate";
 
 //#region User Actions
 export const LoginUser = createAction(
@@ -30,6 +32,22 @@ export const GetCurrentUserFailure = createAction(
   props<{error: string}>()
 )
 //#endregion
+//#region Currency and Exchange Actions
+
+export const GetExchangeRates = createAction(
+  '[Shack] Get Exchange Rates'
+)
+
+export const GetExchangeRatesSuccess = createAction(
+  '[Shack] Get Exchange Rates Success',
+  props<{ result: ExchangeRate[] }>()
+)
+
+export const GetExchangeRatesFailure = createAction(
+  '[Shack] Get Exchange Rates Failure',
+  props<{ error: string }>()
+)
+
 //#region Account Actions
 
 export const GetUserAccounts = createAction(
@@ -78,6 +96,33 @@ export const UpdateAccountInfoOpenDialogSuccess = createAction(
 export const UpdateAccountInfoOpenDialogFailure = createAction(
   '[Shack] - Update Account Info Open Dialog Failure',
   props<{ error: string }>()
+)
+
+export const TransferAccountFunds = createAction(
+  '[Shack] Transfer Account Funds',
+  props<{ request: TransferAccountRequest }>()
+)
+
+export const TransferAccountFundsSuccess = createAction(
+  '[Shack] Transfer Account Funds Success'
+)
+
+export const TransferAccountFundsFailure = createAction(
+  '[Shack] Transfer Account Funds Failure',
+  props<{ error: string }>()
+)
+export const OpenTransferFundsDialog = createAction(
+  '[Shack] Open Transfer Funds Dialog',
+)
+
+export const OpenTransferFundsDialogSuccess = createAction(
+  '[Shack] Open Transfer Funds Dialog Success',
+  props<{ request: TransferAccountRequest }>()
+)
+
+export const OpenTransferFundsDialogFailure = createAction(
+  '[Shack] Open Transfer Funds Dialog Failure',
+  props<{ error?: string }>()
 )
 
 export const UpdateAccountInfoRequestSuccess = createAction(

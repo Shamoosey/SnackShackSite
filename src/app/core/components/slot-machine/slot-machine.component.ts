@@ -20,7 +20,7 @@ export class SlotMachineComponent implements OnInit {
 
   resultText = ""
   
-  amountControl = new FormControl<number>(1, [Validators.min(1), Validators.max(10)]) // fix validator
+  amountControl = new FormControl<number>(1, [Validators.min(1), Validators.max(25)])
 
   get enableInputs() {
     return (
@@ -61,8 +61,35 @@ export class SlotMachineComponent implements OnInit {
   // Holds icon indexes
   indexes = [0, 0, 0];
   
+  // Define multipliers and weights
+  iconMultipliers = {
+    banana: Math.pow(2, 1), // 2^1 = 2
+    lemon: Math.pow(2, 1),  // 2^1 = 2
+    melon: Math.pow(2, 2),  // 2^2 = 4
+    plum: Math.pow(2, 3),   // 2^3 = 8
+    orange: Math.pow(2, 4), // 2^4 = 16
+    bell: Math.pow(2, 5),   // 2^5 = 32
+    cherry: Math.pow(2, 8), // 2^8 = 128
+    seven: Math.pow(2, 9),  // 2^9 = 512
+    bar: Math.pow(2, 10),   // 2^10= 1024
+  };
+
+  // Weights for each icon (inversely proportional to multiplier)
+  iconWeights = {
+    banana: 10, 
+    lemon: 9,
+    melon: 8,
+    plum: 7,
+    orange: 6,
+    bell: 5,
+    cherry: 4,
+    seven: 3,
+    bar: 2
+  };
+
+
   async ngOnInit(): Promise<void> {
-    this.amountControl = new FormControl<number>(1, [Validators.min(1), Validators.max(10)]) // fix validator
+    this.amountControl = new FormControl<number>(1)
   }
 
   infoClick(){
@@ -75,91 +102,125 @@ export class SlotMachineComponent implements OnInit {
     })
   }
 
-  async rollClick():Promise<void>{
+  onSlotMachineRoll(){
+    console.log(this.calculateOdds())
+    // this.rollClick([3, 2, 1]);
+    this.rollClick([1, 1, 1]);
+    // this.rollClick();
+  }
+
+  async rollClick(desiredOutcome?: number[]): Promise<void> {
     if (this.rolling || !this.selectedAccount) {
-      // Prevent multiple spins while a roll is in progress
-      return;
+      return; // Prevent multiple spins
     }
+    this.rolling = true;
   
-    this.rolling = true; // Set rolling to true before starting the spin
-  
-    // Trigger the roll and wait for completion
     const reelsList = document.querySelectorAll('.slots > .reel');
   
     const deltas = await Promise.all(
-      [...reelsList].map((reel, i) => this.roll(reel as HTMLElement, i))
+      [...reelsList].map((reel, i) =>
+        this.roll(reel as HTMLElement, i, desiredOutcome ? desiredOutcome[i] : undefined)
+      )
     );
-    const wager = this.amountControl.value;
-    var updateAmount = ((wager ?? 0) * 2)
-
-    let notes: string = "Slot Machine" 
-    let amount = -(wager ?? 0);
-    // Update indexes based on the results of the spin
+  
+    const wager = this.amountControl.value ?? 0;
+  
     deltas.forEach((delta: number, i: number) => {
-      // console.log(i)
-      // console.log(delta)
-      // console.log((this.indexes[i] + delta) % this.num_icons)
       this.indexes[i] = (this.indexes[i] + delta) % this.num_icons;
     });
-    this.resultText = this.indexes.map((i) => this.iconMap[i]).join(' - ');
   
+    this.resultText = this.indexes.map((i) => this.iconMap[i]).join(' - ');
     this.result = this.indexes.map((i) => this.iconMap[i]);
-    if (this.indexes[0] == this.indexes[1] && this.indexes[1] == this.indexes[2]) {
-      amount = updateAmount;
+  
+    let amount = -wager;
+    if (this.indexes[0] === this.indexes[1] && this.indexes[1] === this.indexes[2]) {
+      amount = wager * (this.iconMultipliers as any)[(this.iconMap as any)[(this.indexes as any)[0]]];
+      console.log("You won: ", amount);
+      console.log((this.iconMultipliers as any)[(this.iconMap as any)[(this.indexes as any)[0]]]);
       const winCls = this.indexes[0] === this.indexes[2] ? 'win2' : 'win1';
       const slots = document.querySelector('.slots');
       slots?.classList.add(winCls);
       setTimeout(() => {
         this.rolling = false;
-        slots?.classList.remove(winCls)
+        slots?.classList.remove(winCls);
       }, 2000);
     } else {
-
-      this.rolling = false; // Reset the rolling flag after completion
+      this.rolling = false;
     }
   
     this.updateAccountBalance.emit({
       transactionType: amount > 0 ? TransactionType.BankToAccount : TransactionType.AccountToBank,
       amount: amount,
-      notes: notes,
-    })
+      notes: "Slot Machine",
+    });
   }
+  
 
   /*
   * I stole this code from here: https://codepen.io/josfabre/pen/abReBvP?editors=1111
   * Modified it to have types and work in angular
+  * The house edge of this slot machine is 96.31%.
   */
-  async roll(reel:HTMLElement, offset = 0) :Promise<number>{
-    const delta = (offset + 2) * this.num_icons + Math.round(Math.random() * this.num_icons); 
-	
-    // Return promise so we can wait for all reels to finish
-    return new Promise((resolve, reject) => {
-      
-      const style = getComputedStyle(reel),
-            // Current background position
-            backgroundPositionY = parseFloat(style["background-position-y" as any]),
-            // Target background position
-            targetBackgroundPositionY = backgroundPositionY + delta * this.icon_height,
-            // Normalized background position, for reset
-            normTargetBackgroundPositionY = targetBackgroundPositionY%(this.num_icons * this.icon_height);
-      
-      // Delay animation with timeout, for some reason a delay in the animation property causes stutter
-      setTimeout(() => { 
-        // Set transition properties ==> https://cubic-bezier.com/#.41,-0.01,.63,1.09
+  async roll(reel: HTMLElement, offset = 0, desiredIndex?: number): Promise<number> {
+    const currentIconIndex = this.indexes[offset];
+  
+    // If a desired index is provided, calculate delta to land there after spinning
+    const additionalLoops = 3; // Number of full loops before stopping
+    const delta = desiredIndex !== undefined
+      ? additionalLoops * this.num_icons + ((desiredIndex - currentIconIndex + this.num_icons) % this.num_icons)
+      : (offset + 2) * this.num_icons + this.getRandomWeightedIndex();
+
+    return new Promise((resolve) => {
+      const style = getComputedStyle(reel);
+      const backgroundPositionY = parseFloat(style["background-position-y" as any]);
+      const targetBackgroundPositionY = backgroundPositionY + delta * this.icon_height;
+      const normTargetBackgroundPositionY = targetBackgroundPositionY % (this.num_icons * this.icon_height);
+
+      setTimeout(() => {
         reel.style.transition = `background-position-y ${(8 + 1 * delta) * this.time_per_icon}ms cubic-bezier(.41,-0.01,.63,1.09)`;
-        // Set background position
         reel.style.backgroundPositionY = `${backgroundPositionY + delta * this.icon_height}px`;
       }, offset * 150);
-        
-      // After animation
+
       setTimeout(() => {
-        // Reset position, so that it doesn't get higher without limit
         reel.style.transition = `none`;
         reel.style.backgroundPositionY = `${normTargetBackgroundPositionY}px`;
-        // Resolve this promise
-        resolve(delta%this.num_icons);
+        resolve(delta % this.num_icons);
       }, (8 + 1 * delta) * this.time_per_icon + offset * 150);
-      
     });
   }
+
+  // Get a random index using weighted probabilities
+  getRandomWeightedIndex(): number {
+    const totalWeight = Object.values(this.iconWeights).reduce((sum, weight) => sum + weight, 0);
+    const randomValue = Math.random() * totalWeight;
+
+    let cumulativeWeight = 0;
+    for (let i = 0; i < this.iconMap.length; i++) {
+      const icon = this.iconMap[i];
+      cumulativeWeight += (this.iconWeights as any)[icon];
+      if (randomValue < cumulativeWeight) {
+        return i; // Return the index of the selected icon
+      }
+    }
+
+    return 0; // Default to the first icon in case something goes wrong
+  }
+
+  // Function to calculate and log the odds
+calculateOdds() {
+  const totalWeight = Object.values(this.iconWeights).reduce((sum, weight) => sum + weight, 0);
+  const iconOdds: { [key: string]: number } = {};
+  for (let i = 0; i < this.iconMap.length; i++) {
+    const icon = this.iconMap[i];
+    iconOdds[icon] = ((this.iconWeights as  any)[icon] / totalWeight) * 100;
+  }
+  console.log("Icon Odds:");
+  Object.entries(iconOdds).sort((a, b) => b[1] - a[1]).forEach(([icon, odds]) => {
+    console.log(`${icon}: ${odds.toFixed(2)}%`);
+  });
+
+  const totalWinOdds = Object.values(iconOdds).reduce((sum, odds) => sum + (odds / 100) ** 3, 0) * 100;
+
+  console.log("Total Odds of Winning (matching icon on all 3 reels):", totalWinOdds.toFixed(2), "%");
+}
 }

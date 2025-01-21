@@ -16,15 +16,16 @@ export class MainActionsComponent implements OnInit, OnChanges {
   @Input() accounts: Account[] = []
   @Input() selectedAccount: Account | null = null;
 
-  @Output() openAdminPannel = new EventEmitter<void>();
   @Output() logout = new EventEmitter<void>()
   @Output() updateAccountInfo = new EventEmitter<string>();
   @Output() accountSelectionChange = new EventEmitter<string>();
+  @Output() transferFunds = new EventEmitter<void>();
   @Output() refreshSelectedAccount = new EventEmitter();
   
   get isAdminUser(){
     return this.currentUser?.isAdmin;
   }
+  
 
   constructor(    
     private dialog: MatDialog,
@@ -35,6 +36,12 @@ export class MainActionsComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges (){
+  }
+
+  deleteAccountClick(){
+    if(this.selectedAccount){
+      this.transferFunds.emit();
+    }
   }
 
   editAccountInfo(){

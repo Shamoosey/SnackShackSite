@@ -14,15 +14,19 @@
                     </mat-select>
                 </mat-form-field>
             </div>
-            <div class="edit item">
+            <div class="edit item" *ngIf="selectedAccount"> 
               <button 
-                *ngIf="selectedAccount" 
+                mat-flat-button 
+                (click)="deleteAccountClick()"
+                >Transfer Funds
+              </button>
+              <button 
                 mat-flat-button 
                 (click)="editAccountInfo()"
                 >Edit
               </button>
             </div>
-            <div class="refresh item">
+            <div class="refresh item" >
               <button 
                 mat-icon-button
                 (click)="refreshSelectedAccount.emit()" 
@@ -31,7 +35,11 @@
               </button>
             </div>
             <div class="admin-controls item" *ngIf="isAdminUser">
-                <button mat-flat-button (click)="openAdminPannel.emit()">Admin Controls</button>
+              <button mat-flat-button [matMenuTriggerFor]="menu">Admin Controls</button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item>Edit Accounts</button>
+                <button mat-menu-item>Edit Users</button>
+              </mat-menu>
             </div>
             <div class="log-out item">
               <button mat-flat-button (click)="logout.emit()">Log Out</button>

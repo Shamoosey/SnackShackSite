@@ -3,13 +3,14 @@ import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { catchError, map, withLatestFrom, of, switchMap, concatMap, mergeMap, tap, filter} from "rxjs";
 import { Store, select } from "@ngrx/store";
 import { ShackState } from "./shack.reducer";
-import { AccountService, AuthService, UserService } from "../services";
+import { AccountService, AuthService, ExchangeRateService, UserService } from "../services";
 import * as fromRouter from '@ngrx/router-store';
 import * as ShackActions from "./shack.actions";
 import { Router } from "@angular/router";
 import { ShackSelectors } from ".";
 import { MatDialog } from "@angular/material/dialog";
-import { InputDialogResult, UpdateAccountInfoDialogComponent, UpdateAccountInfoDialogData } from "../../../shared/components";
+import { DialogComponent, DialogData, DialogResult, InputDialogResult, TransferFundsDialog, TransferFundsDialogData, TransferFundsDialogResult, UpdateAccountInfoDialogComponent, UpdateAccountInfoDialogData } from "../../../shared/components";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 @Injectable()
 export class ShackEffects {
@@ -20,10 +21,11 @@ export class ShackEffects {
     private actions$: Actions,
     private router: Router,
     private userService: UserService,
+    private exchangeRateService: ExchangeRateService,
     private authService: AuthService,
     private accountService: AccountService,
-    private dialog: MatDialog
-
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar
   ) {}
 
   loginUserRedirect$ = createEffect(() => this.actions$.pipe(
@@ -58,6 +60,19 @@ export class ShackEffects {
       this.userService.getCurrentUser().pipe(
         map(user => ShackActions.GetCurrentUserSuccess({ user })),
         catchError(error => of(ShackActions.GetCurrentUserFailure({ error: error.message })))
+      )
+    )
+  ));
+
+  
+  getExchangeRates$ = createEffect(() => this.actions$.pipe(
+    ofType(
+      ShackActions.GetExchangeRates,
+    ),
+    switchMap(action => 
+      this.exchangeRateService.getExchangeRates().pipe(
+        map(result => ShackActions.GetExchangeRatesSuccess({ result })),
+        catchError(error => of(ShackActions.GetExchangeRatesFailure({ error: error.message })))
       )
     )
   ));
@@ -145,12 +160,58 @@ export class ShackEffects {
     )
   ))
 
+  transferFundsDialog$ = createEffect(() => this.actions$.pipe(
+    ofType(
+      ShackActions.OpenTransferFundsDialog
+    ),
+    withLatestFrom(
+      this.store.select(ShackSelectors.getUserAccounts),
+      this.store.select(ShackSelectors.getExchangeRates),
+      this.store.select(ShackSelectors.getCurrentUser),
+      this.store.select(ShackSelectors.getSelectedAccount)
+    ),
+    switchMap(([action, accounts, exchangeRates, currentUser, selectedAccount]) => {
+        const dialogRef = this.dialog.open(TransferFundsDialog, { data: { 
+          accounts: accounts, 
+          exchangeRates: exchangeRates,
+          accountId: selectedAccount?.accountId,
+          userId: currentUser?.id
+        } as TransferFundsDialogData });
+
+        return dialogRef.afterClosed().pipe(
+          switchMap((result: TransferFundsDialogResult) => {
+            if(result.primaryButtonClicked){
+              return of(ShackActions.OpenTransferFundsDialogSuccess({ request: result.data  }));
+            } else {
+              return of(ShackActions.OpenTransferFundsDialogFailure({}));
+            }
+          }),
+          catchError((error: any) => of(ShackActions.OpenTransferFundsDialogFailure({error: "An error occured while transfering funds"})))
+        );
+      }
+    )
+  ));
+
+  transferFundsRequest$ = createEffect(() => this.actions$.pipe(
+    ofType(
+      ShackActions.OpenTransferFundsDialogSuccess
+    ),
+    switchMap((action) => {
+        return this.accountService.transferFunds(action.request).pipe(
+          map(() => ShackActions.TransferAccountFundsSuccess()),
+          catchError(() => of(ShackActions.TransferAccountFundsFailure({error: "Unable to transfer funds"})))
+        );
+      }
+    )
+  ));
+
   getUserAccounts$ = createEffect(() => this.actions$.pipe(
     ofType(
       ShackActions.GetCurrentUserSuccess,
       ShackActions.UpdateAmountBalanceSuccess,
       ShackActions.GetUserAccounts,
-      ShackActions.UpdateAccountInfoRequestSuccess
+      ShackActions.UpdateAccountInfoRequestSuccess,
+      ShackActions.TransferAccountFundsSuccess
     ),
     withLatestFrom(this.store.select(ShackSelectors.getCurrentUser)),
     switchMap(([action, user]) => {
@@ -210,4 +271,24 @@ export class ShackEffects {
       )
     )
   ));
+
+
+  showSnackBar$ = createEffect(() => this.actions$.pipe(
+    ofType(
+      ShackActions.AutenticateUserFailure, 
+      ShackActions.RefreshTokenFailure,
+      ShackActions.TransferAccountFundsFailure,
+      ShackActions.GetUserAccountsFailure,
+      ShackActions.UpdateAmountBalanceFailure,
+      ShackActions.UpdateAccountInfoRequestFailure,
+      ShackActions.GetCurrentUserFailure
+
+    ),
+    tap((action) => {
+      this.snackBar.open(action.error, undefined, {duration: this.SNACK_BAR_DURATION});
+    })
+  ), { dispatch: false }
+);
+
+
 }

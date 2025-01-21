@@ -1,0 +1,46 @@
+@use "variables" as *;
+
+.dialog-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 32px;
+  .dialog-header {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    h2 {
+      padding: 0px;
+      margin: 8px 0px 16px 0px;
+      text-align: center;
+    }
+  }
+  .dialog-content {
+    display: flex;
+    flex-direction: column;
+    .account-select {
+      .select {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        .balance {
+          margin-left: 16px;
+          display: flex;
+          flex-direction: column;
+          .value {
+            margin-top: 16px;
+          }
+        }
+      }
+    }
+
+    .exchange-rate {
+      margin-bottom: 16px;
+    }
+  }
+  .button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+  }
+}
