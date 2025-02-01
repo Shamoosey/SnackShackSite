@@ -26,6 +26,18 @@
                 >Edit
               </button>
             </div>
+            <div class="notification item">
+              <button 
+                mat-icon-button 
+                [matBadge]="'1'"
+                [matMenuTriggerFor]="notificationMenu"
+                class="notifications">
+                <mat-icon>notifications</mat-icon>
+              </button>
+              <mat-menu #notificationMenu="matMenu">
+                You have notifications active!
+              </mat-menu>
+            </div>
             <div class="refresh item" >
               <button 
                 mat-icon-button

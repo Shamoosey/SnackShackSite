@@ -12,5 +12,5 @@ export const CORE_SERVICES = [
   UserService,
   AuthService,
   AccountService,
-  ExchangeRateService
+  ExchangeRateService,
 ]

@@ -32,8 +32,29 @@ export const GetCurrentUserFailure = createAction(
   props<{error: string}>()
 )
 //#endregion
-//#region Currency and Exchange Actions
+//#region SingalR Actions
 
+export const StartSignalRConnection = createAction(
+  '[SignalR] Start Connection'
+);
+
+export const SignalRConnectionSuccess = createAction(
+  '[SignalR] Connection Success'
+);
+
+export const SignalRConnectionFailure = createAction(
+  '[SignalR] Connection Failure',
+  props<{ error: any }>()
+);
+
+export const ReceiveNotification = createAction(
+  '[SignalR] Receive Notification',
+  props<{ message: string }>()
+);
+
+
+//#endregion
+//#region Currency/Exchange Actions
 export const GetExchangeRates = createAction(
   '[Shack] Get Exchange Rates'
 )

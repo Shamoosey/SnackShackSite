@@ -1,7 +1,7 @@
 import { Component, EventEmitter, input, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { Account } from '../../data/models/Account';
 import { MatSelectChange } from '@angular/material/select';
-import { User } from '../../data/models';
+import { ShackNotification, User } from '../../data/models';
 import { UpdateAccountInfoEvent } from '../../data/models/UpdateAccountInfoEvent';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -15,6 +15,7 @@ export class MainActionsComponent implements OnInit, OnChanges {
   @Input() currentUser: User | null = null;
   @Input() accounts: Account[] = []
   @Input() selectedAccount: Account | null = null;
+  @Input() notifications: ShackNotification[] = [];
 
   @Output() logout = new EventEmitter<void>()
   @Output() updateAccountInfo = new EventEmitter<string>();

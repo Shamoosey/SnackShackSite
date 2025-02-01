@@ -6,5 +6,6 @@ import * as config from '../../appsettings.json';
 export const environment = {
   production: false,
   apiUrl: config.apiUri,
-  clientId: config.client_id
+  authUri: config.authUri,
+  clientId: config.client_id,
 };

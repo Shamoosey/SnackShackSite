@@ -9,3 +9,4 @@ export const getUserAccounts = createSelector(shackFeature, state => state.userA
 export const getSelectedAccount = createSelector(shackFeature, state => state.selectedAccount);
 export const getIsRefreshingToken = createSelector(shackFeature, state => state.isRefreshingToken);
 export const getExchangeRates = createSelector(shackFeature, state => state.exchangeRates);
+export const getNotifications = createSelector(shackFeature, state => state.notifications);

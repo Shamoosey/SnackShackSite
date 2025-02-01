@@ -11,9 +11,13 @@ import { ShackSelectors } from ".";
 import { MatDialog } from "@angular/material/dialog";
 import { DialogComponent, DialogData, DialogResult, InputDialogResult, TransferFundsDialog, TransferFundsDialogData, TransferFundsDialogResult, UpdateAccountInfoDialogComponent, UpdateAccountInfoDialogData } from "../../../shared/components";
 import { MatSnackBar } from "@angular/material/snack-bar";
+import * as signalR from '@microsoft/signalr';
+import { environment } from "../../../../environments/environment";
+
 
 @Injectable()
 export class ShackEffects {
+  private hubConnection!: signalR.HubConnection;
   private readonly SNACK_BAR_DURATION = 5000; 
 
   constructor(
@@ -27,6 +31,25 @@ export class ShackEffects {
     private dialog: MatDialog,
     private snackBar: MatSnackBar
   ) {}
+
+  startSignalRConnection$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ShackActions.StartSignalRConnection),
+      switchMap(() => {
+        this.hubConnection = new signalR.HubConnectionBuilder()
+          .withUrl(`${environment.apiUrl}/notifications`)
+          .build();
+
+        return this.hubConnection.start().then(() => {
+            this.hubConnection.on('TranasferNotification', (user: string, message: any) => {
+              this.store.dispatch(ShackActions.ReceiveNotification({ message }));
+            });
+            return ShackActions.SignalRConnectionSuccess();
+          })
+          .catch((error) => ShackActions.SignalRConnectionFailure({ error }));
+      })
+    )
+  );
 
   loginUserRedirect$ = createEffect(() => this.actions$.pipe(
     ofType(ShackActions.LoginUser),
@@ -253,11 +276,9 @@ export class ShackEffects {
 
   refreshToken$ = createEffect(() => this.actions$.pipe(
     ofType(ShackActions.RefreshToken),
-    tap(() => this.store.dispatch(ShackActions.SetRefreshingToken({ value: true }))),
     concatMap(() =>
       this.authService.refreshAccessToken().pipe(
         concatMap((newToken) => {
-          this.store.dispatch(ShackActions.SetRefreshingToken({ value: false }));
           localStorage.setItem('accessToken', newToken.token); // Ensure token is set
           return [
             ShackActions.RefreshTokenSuccess({ token: newToken.token }),
@@ -265,7 +286,6 @@ export class ShackEffects {
           ];
         }),
         catchError((error) => {
-          this.store.dispatch(ShackActions.SetRefreshingToken({ value: false }));
           return of(ShackActions.RefreshTokenFailure({ error }));
         })
       )

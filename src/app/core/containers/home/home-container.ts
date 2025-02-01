@@ -26,6 +26,7 @@ export class HomeContainer implements OnInit, OnChanges {
   ngOnInit(): void {
     this.store.dispatch(ShackActions.GetExchangeRates())
     this.store.dispatch(ShackActions.GetCurrentUser())
+    this.store.dispatch(ShackActions.StartSignalRConnection())
   }
 
   logout(){

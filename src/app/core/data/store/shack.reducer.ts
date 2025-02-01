@@ -14,6 +14,8 @@ export interface ShackState {
   selectedAccount: Account | null;
   exchangeRates: ExchangeRate[],
   isRefreshingToken: boolean;
+  notifications: string[];
+  error: any | null;
 }
 
 const initialState: ShackState = {
@@ -23,7 +25,9 @@ const initialState: ShackState = {
   userAccounts: [],
   selectedAccount: null,
   exchangeRates: [],
-  isRefreshingToken: false
+  isRefreshingToken: false,
+  notifications: [],
+  error: null,
 };
 
 export const shackReducer = createReducer(
@@ -35,7 +39,20 @@ export const shackReducer = createReducer(
       authToken: token
     }
   }),
-
+  on(ShackActions.SignalRConnectionSuccess, (state) => ({
+    ...state,
+    connected: true,
+    error: null,
+  })),
+  on(ShackActions.SignalRConnectionFailure, (state, { error }) => ({
+    ...state,
+    connected: false,
+    error,
+  })),
+  on(ShackActions.ReceiveNotification, (state, { message }) => ({
+    ...state,
+    notifications: [...state.notifications, message],
+  })),
   on(ShackActions.SetRefreshingToken, (state, { value }) => {
     return {
       ...state,

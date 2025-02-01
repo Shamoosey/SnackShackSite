@@ -18,6 +18,7 @@ export class AuthGuard implements CanActivate {
   ): Observable<boolean> {
     const accessToken = localStorage.getItem('accessToken'); 
     if (accessToken) {
+      console.log(accessToken);
       return new Observable<boolean>((observer) => {
         observer.next(true);
         observer.complete();
