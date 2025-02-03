@@ -1,9 +1,9 @@
 import { Component, Inject, Input, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TransferAccountRequest } from '../../../core/data/models/TransferAccountRequest';
-import { Account } from '../../../core/data/models';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ExchangeRate } from '../../../core/data/models/ExchangeRate';
+import { Account } from '../../../core/data/models/Account';
 
 @Component({
   selector: 'app-transfer-funds-dialog',

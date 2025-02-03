@@ -17,6 +17,7 @@
     border-radius: 5px; 
     
     h1 {
+      color: $shade-black-light;
       display: flex;
       font-size: 64px;
       flex-direction: column;
@@ -32,7 +33,7 @@
         transform: rotate(20deg) translate(25px, -30px);
       }
       &.left {
-        transform: rotate(345deg) translate(-40px, 60px);
+        transform: rotate(345deg) translate(-40px, 20px);
       }
     }
   }

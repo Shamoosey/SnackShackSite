@@ -1,13 +1,22 @@
 <div class="main-wrapper">
   <title-bar></title-bar>
   <div class="content">
-    <main-actions
-      [accounts]="accounts"
-      [currentUser]="currentUser"
-      [selectedAccount]="selectedAccount"
-      (accountSelectionChange)="accountSelectionChange.emit($event)"
-      (refreshSelectedAccount)="refreshSelectedAccount.emit()"
-      (transferFunds)="transferFunds.emit()"
-    ></main-actions>
+    <div class="actions">
+      <main-actions
+        [accounts]="accounts"
+        [currentUser]="currentUser"
+        [selectedAccount]="selectedAccount"
+        (accountSelectionChange)="accountSelectionChange.emit($event)"
+        (refreshSelectedAccount)="refreshSelectedAccount.emit()"
+        (transferFunds)="transferFunds.emit()"
+      ></main-actions>
+      <!-- <game-actions
+        [selectedAccount]="selectedAccount"
+        (updateAccountBalance)="updateAccountBalance.emit($event)"
+      ></game-actions> -->
+    </div>
+    <account-history-table
+      [accountHistory]="accountHistory"
+    ></account-history-table>
   </div>
 </div>

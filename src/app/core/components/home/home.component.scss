@@ -6,11 +6,17 @@
   min-width: 1200px;
   overflow-x: hidden;
   background-color: $shade-black-light;
+  color: $color-gray-200;
 
   .content {
-    height: auto;
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 10px;
+    display: flex;
+    margin: 32px;
+    flex-direction: column;
+    .actions {
+      height: auto;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 10px;
+    }
   }
 }

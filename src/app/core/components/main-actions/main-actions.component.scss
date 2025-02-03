@@ -1,9 +1,7 @@
 @use "variables" as *;
 
 .account-wrapper {
-  padding: 48px 32px;
   .action-list {
-    height: 550px;
     display: flex;
     flex-direction: column;
     .header {
@@ -18,7 +16,6 @@
   .content {
     .item {
       display: flex;
-      color: white;
       letter-spacing: 1px;
       margin-bottom: 8px;
       &.account-select {

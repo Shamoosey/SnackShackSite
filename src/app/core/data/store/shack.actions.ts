@@ -1,9 +1,10 @@
 import { createAction, props } from "@ngrx/store";
-import { UpdateAccountInfoRequest, UpdateAccountRequest, User } from "../models";
 import { Account } from "../models/Account";
 import { BalanceChangeEvent } from "../models/BalanceChangeEvent";
 import { TransferAccountRequest } from "../models/TransferAccountRequest";
 import { ExchangeRate } from "../models/ExchangeRate";
+import { User } from "../models/User";
+import { AccountHistory } from "../models/AccountHistory";
 
 //#region User Actions
 
@@ -39,6 +40,10 @@ export const GetExchangeRatesFailure = createAction(
 
 //#region Account Actions
 
+export const RefreshAccounts = createAction(
+  '[Shack] Refresh Accounts'
+)
+
 export const GetUserAccounts = createAction(
   '[Shack] Get User Accounts'
 )
@@ -50,6 +55,20 @@ export const GetUserAccountsSuccess = createAction(
 
 export const GetUserAccountsFailure = createAction(
   '[Shack] Get User Accounts Failure',
+  props<{error: string}>()
+)
+
+export const GetUserAccountHistory = createAction(
+  '[Shack] Get User Accounts History'
+)
+
+export const GetUserAccountHistorySuccess = createAction(
+  '[Shack] Get User Accounts History Success',
+  props<{accounts: AccountHistory[]}>()
+)
+
+export const GetUserAccountHistoryFailure = createAction(
+  '[Shack] Get User Accounts History Failure',
   props<{error: string}>()
 )
 

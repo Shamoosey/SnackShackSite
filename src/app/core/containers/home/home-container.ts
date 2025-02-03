@@ -13,6 +13,7 @@ export class HomeContainer implements OnInit, OnChanges {
   userAccounts$ = this.store.select(ShackSelectors.getUserAccounts);
   selectedAccount$ = this.store.select(ShackSelectors.getSelectedAccount);
   currentUser$ = this.store.select(ShackSelectors.getCurrentUser)
+  accountHistory$ = this.store.select(ShackSelectors.getAccountHistory);
 
   constructor(
     private store: Store<ShackState>

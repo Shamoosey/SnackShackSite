@@ -1,8 +1,9 @@
 import { Action, createReducer, on } from "@ngrx/store";
 import * as ShackActions from "./shack.actions"
-import { User } from "../models";
 import { Account } from "../models/Account";
 import { ExchangeRate } from "../models/ExchangeRate";
+import { User } from "../models/User";
+import { AccountHistory } from "../models/AccountHistory";
 
 export const SHACK_FEATURE_KEY = "shack"
 
@@ -11,6 +12,7 @@ export interface ShackState {
   userAccounts: Account[],
   selectedAccount: Account | null;
   exchangeRates: ExchangeRate[],
+  accountHistory: AccountHistory[]
 }
 
 const initialState: ShackState = {
@@ -18,6 +20,7 @@ const initialState: ShackState = {
   userAccounts: [],
   selectedAccount: null,
   exchangeRates: [],
+  accountHistory: []
 };
 
 export const shackReducer = createReducer(
@@ -49,7 +52,7 @@ export const shackReducer = createReducer(
     return {
       ...state,
       userAccounts: accounts,
-      selectedAccount: accounts.find(x => x.accountId == state.selectedAccount?.accountId) ?? accounts[0]
+      selectedAccount: accounts.find(x => x.accountId == state.selectedAccount?.accountId) ?? null
     }
   }),
   on(ShackActions.SelectedAccountChange, (state, { accountId }) => {
@@ -57,6 +60,12 @@ export const shackReducer = createReducer(
     return {
       ...state,
       selectedAccount: account ?? null
+    }
+  }),
+  on(ShackActions.GetUserAccountHistorySuccess, (state, { accounts }) => {
+    return {
+      ...state,
+      accountHistory: accounts
     }
   })
 )

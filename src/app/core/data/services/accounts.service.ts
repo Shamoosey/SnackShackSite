@@ -3,8 +3,8 @@ import { Injectable } from "@angular/core";
 import { environment } from "../../../../environments/environment";
 import { Account } from "../models/Account";
 import { UpdateAccountRequest } from "../models/UpdateAccountRequest";
-import { UpdateAccountInfoRequest } from "../models";
 import { TransferAccountRequest } from "../models/TransferAccountRequest";
+import { AccountHistory } from "../models/AccountHistory";
 
 @Injectable()
 export class AccountService {
@@ -12,12 +12,8 @@ export class AccountService {
     private http:HttpClient
   ) {}
 
-  getUserAccounts(userId: string){
-    return this.http.get<Account[]>(`${environment.apiUrl}/api/account/GetByUserGetByUser/${userId}`)
-  }
-
-  updateAccountInfo(accountId: string, data: UpdateAccountInfoRequest){
-    return this.http.put<boolean>(`${environment.apiUrl}/api/account/UpdateAccountInfo/${accountId}`, data)
+  getUserAccounts(){
+    return this.http.get<Account[]>(`${environment.apiUrl}/api/account/GetByUser`)
   }
 
   updateAccountBalance(request: UpdateAccountRequest){
@@ -26,5 +22,9 @@ export class AccountService {
 
   transferFunds(request: TransferAccountRequest){
     return this.http.put<boolean>(`${environment.apiUrl}/api/account/TransferFunds`, request)
+  }
+
+  getUserAccountHistory(accountId: string){
+    return this.http.get<AccountHistory[]>(`${environment.apiUrl}/api/account/GetAccountHistory/${accountId}`)
   }
 }

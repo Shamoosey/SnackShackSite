@@ -7,3 +7,4 @@ export const getCurrentUser = createSelector(shackFeature, state => state.curren
 export const getUserAccounts = createSelector(shackFeature, state => state.userAccounts)
 export const getSelectedAccount = createSelector(shackFeature, state => state.selectedAccount);
 export const getExchangeRates = createSelector(shackFeature, state => state.exchangeRates);
+export const getAccountHistory = createSelector(shackFeature, state => state.accountHistory);

@@ -1,9 +1,8 @@
 import { Component, EventEmitter, Inject, input, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { Account } from '../../data/models/Account';
-import { User } from '../../data/models';
 import { AuthService } from '@auth0/auth0-angular';
-import { DOCUMENT } from '@angular/common';
 import { environment } from '../../../../environments/environment';
+import { User } from '../../data/models/User';
 
 @Component({
   selector: 'main-actions',
@@ -23,11 +22,14 @@ export class MainActionsComponent implements OnInit, OnChanges {
   get isAdminUser(){
     return this.currentUser?.isAdmin;
   }
+
+  get selectedAccountBalanace(){
+    return this.selectedAccount ? `${this.selectedAccount.amount} - ${this.selectedAccount.currencyCode}` : "";
+  }
   
 
   constructor(    
     private auth: AuthService,
-    @Inject(DOCUMENT) private document: Document
   ) {}
   
   ngOnInit(): void {

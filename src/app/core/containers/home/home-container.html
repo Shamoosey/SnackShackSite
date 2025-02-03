@@ -2,6 +2,7 @@
   [accounts]="(userAccounts$ | async) != null ? $any(userAccounts$ | async) : []"
   [selectedAccount]="(selectedAccount$ | async)"
   [currentUser]="(currentUser$ | async)"
+  [accountHistory]="(accountHistory$ | async) ? $any(accountHistory$ | async) : []"
   (accountSelectionChange)="accountSelectionChange($event)"
   (updateAccountBalance)="updateAccountBalance($event)"
   (refreshSelectedAccount)="refreshSelectedAccount()"

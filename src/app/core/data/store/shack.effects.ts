@@ -9,7 +9,7 @@ import * as ShackActions from "./shack.actions";
 import { Router } from "@angular/router";
 import { ShackSelectors } from ".";
 import { MatDialog } from "@angular/material/dialog";
-import { DialogComponent, DialogData, DialogResult, InputDialogResult, TransferFundsDialog, TransferFundsDialogData, TransferFundsDialogResult, UpdateAccountInfoDialogComponent, UpdateAccountInfoDialogData } from "../../../shared/components";
+import { DialogComponent, DialogData, DialogResult, TransferFundsDialog, TransferFundsDialogData, TransferFundsDialogResult } from "../../../shared/components";
 import { MatSnackBar } from "@angular/material/snack-bar";
 
 @Injectable()
@@ -133,9 +133,31 @@ export class ShackEffects {
     withLatestFrom(this.store.select(ShackSelectors.getCurrentUser)),
     switchMap(([action, user]) => {
       if(user){
-        return this.accountService.getUserAccounts(user.id).pipe(
+        return this.accountService.getUserAccounts().pipe(
           map(accounts => ShackActions.GetUserAccountsSuccess({ accounts })),
           catchError(error => of(ShackActions.GetUserAccountsFailure({ error: error.message })))
+        )
+      } else {
+        return of(ShackActions.GetUserAccountsFailure({ error: "User is null" }))
+      }
+    })
+  ));
+
+
+  getUserAccountsHistory$ = createEffect(() => this.actions$.pipe(
+    ofType(
+      ShackActions.GetUserAccountHistory,
+      ShackActions.SelectedAccountChange
+    ),
+    withLatestFrom(
+      this.store.select(ShackSelectors.getCurrentUser),
+      this.store.select(ShackSelectors.getSelectedAccount)
+    ),
+    switchMap(([action, user, account]) => {
+      if(user && account){
+        return this.accountService.getUserAccountHistory(account.accountId).pipe(
+          map(accounts => ShackActions.GetUserAccountHistorySuccess({ accounts })),
+          catchError(error => of(ShackActions.GetUserAccountHistoryFailure({ error: error.message })))
         )
       } else {
         return of(ShackActions.GetUserAccountsFailure({ error: "User is null" }))
@@ -154,8 +176,6 @@ export class ShackEffects {
     tap((action) => {
       this.snackBar.open(action.error, undefined, {duration: this.SNACK_BAR_DURATION});
     })
-  ), { dispatch: false }
-);
-
-
+    ), { dispatch: false }
+  );
 }

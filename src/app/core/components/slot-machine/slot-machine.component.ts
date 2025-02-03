@@ -36,6 +36,7 @@ export class SlotMachineComponent implements OnInit {
     ) && 
     !this.rolling && 
     this.amountControl.valid &&
+    (this.amountControl.value ?? 0) > 0 && 
     (this.selectedAccount.amount - (this.amountControl.value ?? 0) >= 0)
   }
   
@@ -112,6 +113,13 @@ export class SlotMachineComponent implements OnInit {
       return; // Prevent multiple spins
     }
     this.rolling = true;
+
+    const wager = this.amountControl.value ?? 0;
+    this.updateAccountBalance.emit({
+      transactionType: TransactionType.AccountToBank,
+      amount: -Math.abs(wager),
+      notes: "Slot Machine Bet",
+    });
   
     const reelsList = document.querySelectorAll('.slots > .reel');
   
@@ -121,8 +129,6 @@ export class SlotMachineComponent implements OnInit {
       )
     );
   
-    const wager = this.amountControl.value ?? 0;
-  
     deltas.forEach((delta: number, i: number) => {
       this.indexes[i] = (this.indexes[i] + delta) % this.num_icons;
     });
@@ -130,11 +136,15 @@ export class SlotMachineComponent implements OnInit {
     this.resultText = this.indexes.map((i) => this.iconMap[i]).join(' - ');
     this.result = this.indexes.map((i) => this.iconMap[i]);
   
-    let amount = -wager;
     if (this.indexes[0] === this.indexes[1] && this.indexes[1] === this.indexes[2]) {
-      amount = wager * (this.iconMultipliers as any)[(this.iconMap as any)[(this.indexes as any)[0]]];
+      const amount = wager * (this.iconMultipliers as any)[(this.iconMap as any)[(this.indexes as any)[0]]];
       console.log("You won: ", amount);
       console.log((this.iconMultipliers as any)[(this.iconMap as any)[(this.indexes as any)[0]]]);
+      this.updateAccountBalance.emit({
+        transactionType: TransactionType.BankToAccount,
+        amount: amount,
+        notes: "Slot Machine Win",
+      });
       const winCls = this.indexes[0] === this.indexes[2] ? 'win2' : 'win1';
       const slots = document.querySelector('.slots');
       slots?.classList.add(winCls);
@@ -145,12 +155,6 @@ export class SlotMachineComponent implements OnInit {
     } else {
       this.rolling = false;
     }
-  
-    this.updateAccountBalance.emit({
-      transactionType: amount > 0 ? TransactionType.BankToAccount : TransactionType.AccountToBank,
-      amount: amount,
-      notes: "Slot Machine",
-    });
   }
   
 

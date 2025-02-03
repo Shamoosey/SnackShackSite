@@ -14,7 +14,7 @@
           </mat-select>
         </mat-form-field>
       </div>
-      <div class="actions item" *ngIf="selectedAccount"> 
+      <div class="actions item"> 
         <button 
           mat-flat-button 
           (click)="deleteAccountClick()"
@@ -32,7 +32,7 @@
       </div>
       <div class="current-balance item">
         <div class="title">Current Balance:</div>
-        <div class="value">{{selectedAccount?.amount}} - {{selectedAccount?.currencyCode}}</div>
+        <div class="value">{{ selectedAccountBalanace }}</div>
       </div>
     </div>
   </div>

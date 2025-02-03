@@ -1,0 +1,7 @@
+@use "variables" as *;
+
+.account-history-wrapper{
+  .mat-mdc-table {
+    min-height: 400px;
+  }
+}
