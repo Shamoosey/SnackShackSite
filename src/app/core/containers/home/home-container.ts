@@ -28,14 +28,6 @@ export class HomeContainer implements OnInit, OnChanges {
     this.store.dispatch(ShackActions.GetCurrentUser())
   }
 
-  logout(){
-    this.store.dispatch(ShackActions.LogoutUser())
-  }
-
-  updateAccountInformation(accountId: string){
-    this.store.dispatch(ShackActions.UpdateAccountInfoOpenDialog({ accountId }))
-  }
-
   accountSelectionChange(accountId:string){
     this.store.dispatch(ShackActions.SelectedAccountChange({ accountId }))
   }

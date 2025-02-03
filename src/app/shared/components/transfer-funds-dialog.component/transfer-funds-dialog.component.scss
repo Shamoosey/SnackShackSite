@@ -2,8 +2,8 @@
 
 .dialog-wrapper {
   display: flex;
-  flex-direction: column;
   justify-content: center;
+  flex-direction: column;
   margin: 32px;
   .dialog-header {
     display: flex;
@@ -18,11 +18,16 @@
   .dialog-content {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     .account-select {
       .select {
         display: flex;
         flex-direction: row;
-        justify-content: center;
+        
+        .mat-mdc-form-field {
+          width: 300px;
+        }
+
         .balance {
           margin-left: 16px;
           display: flex;

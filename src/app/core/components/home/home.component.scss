@@ -4,13 +4,13 @@
   height: 100vh;
   width: 100%;
   min-width: 1200px;
-  overflow-x: hidden; /* Prevent horizontal overflow */
+  overflow-x: hidden;
+  background-color: $shade-black-light;
 
   .content {
     height: auto;
     display: grid;
-    grid-template-columns: 400px 1fr;
+    grid-template-columns: auto 1fr;
     gap: 10px;
-    background-color: $shade-black-light;
   }
 }

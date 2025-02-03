@@ -19,7 +19,8 @@ export class TransferFundsDialog implements OnInit {
 
   fromAccounts = this.data.accounts;
   toAccounts = this.data.accounts;
-  exchangeRate: number = 0;
+  fromExchangeRate: number = 0;
+  toExchangeRate: number = 0;
   exchangeResult: number = 0; 
 
   transferFundsForm = new FormGroup({
@@ -29,18 +30,9 @@ export class TransferFundsDialog implements OnInit {
   });
 
   get enableConfirmButton() {
-    const fromAccountId = this.transferFundsForm.controls.fromAccount.value;
-    const fromAccount = this.data.accounts.find(account => account.accountId === fromAccountId);
-  
-    const amount = this.transferFundsForm.controls.amount.value ?? 0;
-    const exchangeRate = this.exchangeRate;
-  
-    const isAmountWholeNumber = amount % 1 === 0 && amount > 0;
-    const exchangeRateResult = exchangeRate !== null ? exchangeRate * amount : null;
-    const isExchangeRateResultWholeNumber =
-      exchangeRateResult !== null && exchangeRateResult % 1 === 0;
-  
-    const isAmountValid = amount <= (fromAccount?.amount ?? 0);
+    const isAmountWholeNumber = this.amount % 1 === 0 && this.amount > 0;
+    const isExchangeRateResultWholeNumber = (this.exchangeResult !== null && this.exchangeResult % 1 === 0);
+    const isAmountValid = (this.exchangeResult <= (this.getFromSelectedAccount()?.amount ?? 0));
   
     return (
       this.transferFundsForm.valid &&
@@ -78,14 +70,14 @@ export class TransferFundsDialog implements OnInit {
     // Subscribe to form value changes
     this.transferFundsForm.valueChanges.subscribe((value) => {
       const { fromAccount, toAccount } = value;
-      this.exchangeResult = this.exchangeRate * (this.transferFundsForm.controls.amount.value ?? 0)
+      this.exchangeResult = this.fromExchangeRate * (this.transferFundsForm.controls.amount.value ?? 0)
       this.updateExchangeRate(fromAccount ?? null, toAccount ?? null);
     });
   }
 
   updateExchangeRate(fromAccountId: string | null, toAccountId: string | null): void {
     if (!fromAccountId || !toAccountId) {
-      this.exchangeRate = 0;
+      this.fromExchangeRate = 0;
       return;
     }
 
@@ -93,11 +85,15 @@ export class TransferFundsDialog implements OnInit {
     const toAccount = this.data.accounts.find(account => account.accountId === toAccountId);
 
     if (fromAccount && toAccount) {
-      const rate = this.data.exchangeRates.find(
+      const toRate = this.data.exchangeRates.find(
         er => er.fromCurrencyId === fromAccount.currencyId && er.toCurrencyId === toAccount.currencyId
       );
+      this.toExchangeRate = toRate?.rate ?? 0;
 
-      this.exchangeRate = rate ? rate.rate : 0; 
+      const fromRate = this.data.exchangeRates.find(
+        er => er.fromCurrencyId === toAccount.currencyId && er.toCurrencyId === fromAccount.currencyId
+      );
+      this.fromExchangeRate = fromRate?.rate ?? 0; 
     }
   }
 
@@ -110,12 +106,22 @@ export class TransferFundsDialog implements OnInit {
         data: {
           fromAccountId: formData.fromAccount,
           toAccountId: formData.toAccount,
-          amount: formData.amount,
+          amount: this.exchangeResult,
           userId: this.data.userId,
           notes: "Account transfer"
         }
       } as TransferFundsDialogResult);
     }
+  }
+
+  getResultString(){
+    var returnString = "";
+    if(this.getFromSelectedAccount() && this.getToSelectedAccount() && this.amount > 0){
+      const fromCurrencyCode = this.getFromSelectedAccount()?.currencyCode ?? ""
+      const toCurrencyCode = this.getToSelectedAccount()?.currencyCode ?? ""
+      returnString = `${this.exchangeResult} ${fromCurrencyCode} x ${this.toExchangeRate} => ${this.amount} ${toCurrencyCode}`
+    }
+    return returnString
   }
   
   getFromSelectedAccount(){

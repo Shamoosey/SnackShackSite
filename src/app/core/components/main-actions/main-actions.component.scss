@@ -1,52 +1,17 @@
 @use "variables" as *;
 
-.action-wrapper {
+.account-wrapper {
+  padding: 48px 32px;
   .action-list {
     height: 550px;
     display: flex;
     flex-direction: column;
-    h1 {
+    .header {
+      margin-bottom: 16px;
+      h1 {
+        margin: 0px;
+        text-align: left;
         color: $color-gray-200
-    }
-  }
-  .header {
-    margin-top: 16px;
-    display: flex;
-    flex-direction: row;
-    .item {
-      margin-right: 16px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-around;
-    }
-    .admin-controls {
-      margin-left: auto;
-    }
-    .account-select {
-      margin-left: 32px;
-      width: 350px;
-    }
-    .edit {
-      width: 100px;
-      button {
-        height: 30px;
-        &.mat-mdc-button-disabled {
-          background-color: $shade-white-grey;
-          opacity: .3;
-        }
-      }
-    }
-    .refresh {      
-      margin-right: auto;
-      mat-icon {
-        cursor: pointer;
-        color: $white;
-        height: unset;
-        width: unset;
-        font-size: 32px;
-        &:hover {
-          color: $color-gray-500;
-        }
       }
     }
   }
@@ -56,15 +21,34 @@
       color: white;
       letter-spacing: 1px;
       margin-bottom: 8px;
-      width: 500px;
+      &.account-select {
+        .mat-mdc-form-field {
+          width: 100%;
+          ::ng-deep .mat-mdc-form-field-subscript-wrapper{
+            display: none;
+          }
+        }
+      }
+      &.actions {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        button {
+          height: 32px;
+          margin-bottom: 8px;
+          &.mat-mdc-button-disabled {
+            background-color: $shade-white-grey;
+            opacity: .3;
+          }
+        }
+      }
       .title {
         font-size: 20px;
         width: 250px;
         color: $color-gray-500
-        // margin-right: 16px;
       }
       .value {
-        width: 350px;
+        width: 150px;
         font-size: 20px;
         white-space: nowrap; 
         overflow: hidden;

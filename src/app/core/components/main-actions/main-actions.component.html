@@ -1,66 +1,39 @@
-<div class="action-wrapper">
-    <div class="action-list">
-        <div class="header">
-            <div class="title item">
-                <h1>Account Infomation</h1>
-            </div>
-            <div class="account-select item">
-                <mat-form-field>
-                    <mat-label>Select Account</mat-label>
-                    <mat-select (selectionChange)="accountSelectionChange.emit($event.value)">
-                        @for (acct of accounts; track acct) {
-                            <mat-option [value]="acct.accountId">{{acct.accountName}} - {{acct.currencyCode}}</mat-option>
-                        }
-                    </mat-select>
-                </mat-form-field>
-            </div>
-            <div class="edit item" *ngIf="selectedAccount"> 
-              <button 
-                mat-flat-button 
-                (click)="deleteAccountClick()"
-                >Transfer Funds
-              </button>
-              <button 
-                mat-flat-button 
-                (click)="editAccountInfo()"
-                >Edit
-              </button>
-            </div>
-            <div class="refresh item" >
-              <button 
-                mat-icon-button
-                (click)="refreshSelectedAccount.emit()" 
-                class="refresh">
-                <mat-icon>refresh</mat-icon>
-              </button>
-            </div>
-            <div class="admin-controls item" *ngIf="isAdminUser">
-              <button mat-flat-button [matMenuTriggerFor]="menu">Admin Controls</button>
-              <mat-menu #menu="matMenu">
-                <button mat-menu-item>Edit Accounts</button>
-                <button mat-menu-item>Edit Users</button>
-              </mat-menu>
-            </div>
-            <div class="log-out item">
-              <button mat-flat-button (click)="logout.emit()">Log Out</button>
-          </div>
-        </div>
-        <div class="content">
-          <div class="account-name item">
-            <div class="title">Account Name:</div>
-            <div class="value">{{selectedAccount?.accountName}}</div>
-          </div>
-          <div class="current-balance item">
-            <div class="title">Current Balance:</div>
-            <div class="value">{{selectedAccount?.amount}}</div>
-          </div>
-          <div class="currency item">
-            <div class="title">Currency:</div>
-            <div class="value">{{selectedAccount?.currencyCode}}</div>
-          </div>
-        </div>
-        <div class="footer">
-    
-        </div>
+<div class="account-wrapper">
+  <div class="action-list">
+    <div class="header">
+      <h1>Account Infomation</h1>
     </div>
+    <div class="content">
+      <div class="account-select item">
+        <mat-form-field>
+          <mat-label>Select Account</mat-label>
+          <mat-select (selectionChange)="accountSelectionChange.emit($event.value)" [value]="selectedAccount?.accountId">
+            @for (acct of accounts; track acct) {
+              <mat-option [value]="acct.accountId">{{acct.accountName}} - {{acct.currencyCode}}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="actions item" *ngIf="selectedAccount"> 
+        <button 
+          mat-flat-button 
+          (click)="deleteAccountClick()"
+          >Transfer Funds
+        </button>
+        <button 
+          mat-flat-button 
+          (click)="logoutClick()"
+          >Log Out
+        </button>
+      </div>
+      <div class="account-name item">
+        <div class="title">Account Name:</div>
+        <div class="value">{{selectedAccount?.accountName}}</div>
+      </div>
+      <div class="current-balance item">
+        <div class="title">Current Balance:</div>
+        <div class="value">{{selectedAccount?.amount}} - {{selectedAccount?.currencyCode}}</div>
+      </div>
+    </div>
+  </div>
 </div>

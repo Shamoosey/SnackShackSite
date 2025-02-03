@@ -5,7 +5,7 @@ import { User } from "../models";
 import { environment } from "../../../../environments/environment";
 
 @Injectable()
-export class UserService {
+export class UserService{
   constructor(
     private http:HttpClient
   ) {}

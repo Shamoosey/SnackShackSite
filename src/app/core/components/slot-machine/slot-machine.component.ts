@@ -103,10 +103,8 @@ export class SlotMachineComponent implements OnInit {
   }
 
   onSlotMachineRoll(){
-    console.log(this.calculateOdds())
-    // this.rollClick([3, 2, 1]);
-    this.rollClick([1, 1, 1]);
-    // this.rollClick();
+    // this.rollClick([0, 0, 0]);
+    this.rollClick();
   }
 
   async rollClick(desiredOutcome?: number[]): Promise<void> {

@@ -7,55 +7,21 @@ import { ExchangeRate } from "../models/ExchangeRate";
 export const SHACK_FEATURE_KEY = "shack"
 
 export interface ShackState {
-  isAuthenticated: boolean,
   currentUser: User | null,
-  authToken: string | null
   userAccounts: Account[],
   selectedAccount: Account | null;
   exchangeRates: ExchangeRate[],
-  isRefreshingToken: boolean;
 }
 
 const initialState: ShackState = {
   currentUser: null,
-  isAuthenticated: false,
-  authToken: null,
   userAccounts: [],
   selectedAccount: null,
   exchangeRates: [],
-  isRefreshingToken: false
 };
 
 export const shackReducer = createReducer(
   initialState,
-  on(ShackActions.AutenticateUserSuccess, (state, { token }) => {
-    localStorage.setItem('accessToken', token)
-    return {
-      ...state,
-      authToken: token
-    }
-  }),
-
-  on(ShackActions.SetRefreshingToken, (state, { value }) => {
-    return {
-      ...state,
-      isRefreshingToken: value
-    }
-  }),
-  on(ShackActions.RefreshTokenSuccess, (state, { token }) => {
-    localStorage.setItem('accessToken', token)
-    return {
-      ...state,
-      authToken: token,
-      isRefreshingToken: false
-    }
-  }),
-  on(ShackActions.LogoutUser, (state) => {
-    localStorage.removeItem('accessToken')
-    return {
-      ...initialState
-    }
-  }),
   on(ShackActions.GetExchangeRates, (state) => {
     return {
       ...state
@@ -83,7 +49,7 @@ export const shackReducer = createReducer(
     return {
       ...state,
       userAccounts: accounts,
-      selectedAccount: accounts.find(x => x.accountId == state.selectedAccount?.accountId) ?? null
+      selectedAccount: accounts.find(x => x.accountId == state.selectedAccount?.accountId) ?? accounts[0]
     }
   }),
   on(ShackActions.SelectedAccountChange, (state, { accountId }) => {
