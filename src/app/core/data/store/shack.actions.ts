@@ -6,17 +6,6 @@ import { TransferAccountRequest } from "../models/TransferAccountRequest";
 import { ExchangeRate } from "../models/ExchangeRate";
 
 //#region User Actions
-export const LoginUser = createAction(
-  '[Shack] Login User'
-)
-
-export const LoginUserRedirect = createAction(
-  '[Shack] Login User Redirect'
-)
-
-export const LogoutUser = createAction(
-  '[Shack] Logout User'
-)
 
 export const GetCurrentUser = createAction(
   '[Shack] Get Current User'
@@ -83,21 +72,6 @@ export const UpdateAmountBalanceFailure = createAction(
   props<{ error: string }>()
 )
 
-export const UpdateAccountInfoOpenDialog = createAction(
-  '[Shack] - Update Account Info Open Dialog',
-  props<{ accountId: string }>()
-)
-
-export const UpdateAccountInfoOpenDialogSuccess = createAction(
-  '[Shack] - Update Account Info Open Dialog Success',
-  props<{ accountId: string, data: UpdateAccountInfoRequest }>()
-)
-
-export const UpdateAccountInfoOpenDialogFailure = createAction(
-  '[Shack] - Update Account Info Open Dialog Failure',
-  props<{ error: string }>()
-)
-
 export const TransferAccountFunds = createAction(
   '[Shack] Transfer Account Funds',
   props<{ request: TransferAccountRequest }>()
@@ -124,51 +98,6 @@ export const OpenTransferFundsDialogFailure = createAction(
   '[Shack] Open Transfer Funds Dialog Failure',
   props<{ error?: string }>()
 )
-
-export const UpdateAccountInfoRequestSuccess = createAction(
-  '[Shack] - Update Account Info Request Success'
-)
-
-export const UpdateAccountInfoRequestFailure = createAction(
-  '[Shack] - Update Account Info Request Failure',
-  props<{ error: string }>()
-)
-//#endregion
-//#region Auth Actions
-export const AutenticateUser = createAction(
-  '[Shack] Authenticate User',
-  props<{ code: string }>()
-);
-
-export const AutenticateUserSuccess = createAction(
-  '[Shack] Authenticate User Success',
-  props<{ token: string}>()
-);
-
-export const AutenticateUserFailure = createAction(
-  '[Shack] Authenticate User Failure',
-  props<{ error: string}>()
-);
-
-export const SetRefreshingToken = createAction(
-  '[Shack] Set Refreshing Token',
-  props<{ value: boolean}>()
-)
-
-export const RefreshToken = createAction(
-  '[Shack] Refresh Token'
-);
-
-export const RefreshTokenSuccess = createAction(
-  '[Shack] Refresh Token Success',
-  props<{ token: string }>()
-);
-
-export const RefreshTokenFailure = createAction(
-  '[Shack] Refresh Token Failure',
-  props<{ error: any }>()
-);
-//#endregion
 
 export const NoOperation = createAction(
   '[Shack] No Operation'

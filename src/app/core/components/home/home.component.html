@@ -1,19 +1,13 @@
 <div class="main-wrapper">
-    <title-bar></title-bar>
-    <div class="content">
-        <slot-machine
-          [selectedAccount]="selectedAccount"
-          (updateAccountBalance)="updateAccountBalance.emit($event)"
-        ></slot-machine>
-        <main-actions
-          [accounts]="accounts"
-          [currentUser]="currentUser"
-          [selectedAccount]="selectedAccount"
-          (accountSelectionChange)="accountSelectionChange.emit($event)"
-          (refreshSelectedAccount)="refreshSelectedAccount.emit()"
-          (updateAccountInfo)="updateAccountInfo.emit($event)"
-          (transferFunds)="transferFunds.emit()"
-          (logout)="logout.emit()"
-        ></main-actions>
-    </div>
+  <title-bar></title-bar>
+  <div class="content">
+    <main-actions
+      [accounts]="accounts"
+      [currentUser]="currentUser"
+      [selectedAccount]="selectedAccount"
+      (accountSelectionChange)="accountSelectionChange.emit($event)"
+      (refreshSelectedAccount)="refreshSelectedAccount.emit()"
+      (transferFunds)="transferFunds.emit()"
+    ></main-actions>
+  </div>
 </div>

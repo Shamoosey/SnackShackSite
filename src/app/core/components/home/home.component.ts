@@ -14,10 +14,8 @@ export class HomeComponent implements OnInit{
   @Input() selectedAccount: Account | null = null;
   @Input() currentUser: User | null = null;
   
-  @Output() logout = new EventEmitter<void>()
   @Output() accountSelectionChange = new EventEmitter<string>();
   @Output() updateAccountBalance = new EventEmitter<BalanceChangeEvent>();
-  @Output() updateAccountInfo = new EventEmitter<string>();
   @Output() refreshSelectedAccount = new EventEmitter();
   @Output() transferFunds = new EventEmitter<void>();
 

@@ -12,17 +12,15 @@ import { CORE_SERVICES, UserService } from './data/services';
 import { MaterialModule } from '../material.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { SharedModule } from '../shared/shared.module';
-import { AUTH_COMPONENTS } from './data/auth';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
 import { AppRoutingModule } from '../app-routing.module';
-import { TokenInterceptor } from './data/interceptors/TokenInterceptor';
+import { authHttpInterceptorFn, AuthModule, provideAuth0 } from '@auth0/auth0-angular';
 
 @NgModule({
   declarations: [
     ...CORE_COMPONENTS,
     ...CORE_CONTAINERS,
-    ...AUTH_COMPONENTS
   ],
   imports: [
     AppRoutingModule,
@@ -39,13 +37,11 @@ import { TokenInterceptor } from './data/interceptors/TokenInterceptor';
   providers: [
     provideHttpClient(withInterceptorsFromDi()),
     provideAnimations(),
-    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     ...CORE_SERVICES,
   ],
   exports: [
     ...CORE_COMPONENTS,
     ...CORE_CONTAINERS,
-    ...AUTH_COMPONENTS
   ]
 })
 export class CoreModule { }

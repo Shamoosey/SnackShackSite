@@ -3,9 +3,7 @@
   [selectedAccount]="(selectedAccount$ | async)"
   [currentUser]="(currentUser$ | async)"
   (accountSelectionChange)="accountSelectionChange($event)"
-  (logout)="logout()"
   (updateAccountBalance)="updateAccountBalance($event)"
-  (updateAccountInfo)="updateAccountInformation($event)"
   (refreshSelectedAccount)="refreshSelectedAccount()"
   (transferFunds)="transferFunds()"
 ></app-home>

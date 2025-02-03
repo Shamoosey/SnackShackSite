@@ -1,9 +1,9 @@
-import { Component, EventEmitter, input, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, input, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { Account } from '../../data/models/Account';
-import { MatSelectChange } from '@angular/material/select';
 import { User } from '../../data/models';
-import { UpdateAccountInfoEvent } from '../../data/models/UpdateAccountInfoEvent';
-import { MatDialog } from '@angular/material/dialog';
+import { AuthService } from '@auth0/auth0-angular';
+import { DOCUMENT } from '@angular/common';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'main-actions',
@@ -16,8 +16,6 @@ export class MainActionsComponent implements OnInit, OnChanges {
   @Input() accounts: Account[] = []
   @Input() selectedAccount: Account | null = null;
 
-  @Output() logout = new EventEmitter<void>()
-  @Output() updateAccountInfo = new EventEmitter<string>();
   @Output() accountSelectionChange = new EventEmitter<string>();
   @Output() transferFunds = new EventEmitter<void>();
   @Output() refreshSelectedAccount = new EventEmitter();
@@ -28,7 +26,8 @@ export class MainActionsComponent implements OnInit, OnChanges {
   
 
   constructor(    
-    private dialog: MatDialog,
+    private auth: AuthService,
+    @Inject(DOCUMENT) private document: Document
   ) {}
   
   ngOnInit(): void {
@@ -38,15 +37,13 @@ export class MainActionsComponent implements OnInit, OnChanges {
   ngOnChanges (){
   }
 
+  logoutClick(){
+    this.auth.logout({ logoutParams: { returnTo: `${environment.auth.authorizationParams.redirect_uri}` } });
+  }
+
   deleteAccountClick(){
     if(this.selectedAccount){
       this.transferFunds.emit();
-    }
-  }
-
-  editAccountInfo(){
-    if(this.selectedAccount){
-      this.updateAccountInfo.emit(this.selectedAccount.accountId)
     }
   }
 }

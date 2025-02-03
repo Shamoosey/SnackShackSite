@@ -8,10 +8,10 @@
         <div class="account-select">
           <div class="from-account select">
             <mat-form-field>
-              <mat-label>From Account</mat-label>
+              <mat-label>From Account - {{getFromSelectedAccount()?.currencyCode}}</mat-label>
               <mat-select formControlName="fromAccount">
                 <mat-option *ngFor="let acct of fromAccounts" [value]="acct.accountId">
-                  {{acct.accountName}} - {{acct.currencyCode}}
+                  {{acct.accountName}}
                 </mat-option>
               </mat-select>
             </mat-form-field>
@@ -22,31 +22,28 @@
           </div>
           <div class="to-account select">
             <mat-form-field>
-              <mat-label>To Account</mat-label>
+              <mat-label>To Account - {{getToSelectedAccount()?.currencyCode}}</mat-label>
               <mat-select formControlName="toAccount">
                 <mat-option *ngFor="let acct of toAccounts" [value]="acct.accountId">
-                  {{acct.accountName}} - {{acct.currencyCode}}
+                  {{acct.accountName}}
                 </mat-option>
               </mat-select>
             </mat-form-field>
-            <div class="balance">
+            <div class="balance" *ngIf="getToSelectedAccount()">
               <div class="title">Balance</div>
               <div class="value">{{getToSelectedAccount()?.amount}} {{getToSelectedAccount()?.currencyCode}}</div>
             </div>
           </div>
-        </div>
-        <div class="amount">
-          <mat-form-field>
-            <mat-label>Amount</mat-label>
-            <input matInput placeholder="Amount" formControlName="amount" required />
-          </mat-form-field>
+          <div class="amount select">
+            <mat-form-field>
+              <mat-label>Amount - {{getToSelectedAccount()?.currencyCode}}</mat-label>
+              <input matInput placeholder="Amount" formControlName="amount" required />
+            </mat-form-field>
+          </div>
         </div>
       </div>
       <div class="exchange-rate">
-        <span>Exchange Rate: {{exchangeRate}}</span>
-      </div>
-      <div class="exchange-rate">
-        <span>Result: {{exchangeRate * amount}}</span>
+        <span>{{getResultString()}}</span>
       </div>
     </div>
     <div class="button-container">
