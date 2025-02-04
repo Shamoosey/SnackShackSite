@@ -1,7 +1,7 @@
 
 import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { AccountHistory } from '../../data/models/AccountHistory';
+import { AccountHistory } from '../../../data/models/AccountHistory';
 import { MatSort } from '@angular/material/sort';
 
 @Component({
@@ -10,9 +10,9 @@ import { MatSort } from '@angular/material/sort';
   standalone: false,
   styleUrl: './account-history-table.component.scss'
 })
-export class AccountHistoryTableComponent implements AfterViewInit, OnChanges{
+export class AccountHistoryTableComponent implements OnInit, AfterViewInit, OnChanges{
   @Input() accountHistory: AccountHistory[] = []
-  
+  offset = new Date().getTimezoneOffset();
   dataSource = new MatTableDataSource<AccountHistory>();
   @ViewChild(MatSort) sort!: MatSort;
   displayedColumns = [
@@ -23,6 +23,8 @@ export class AccountHistoryTableComponent implements AfterViewInit, OnChanges{
     "transactionNotes"
   ]
   
+  ngOnInit(): void {
+  }
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
   }

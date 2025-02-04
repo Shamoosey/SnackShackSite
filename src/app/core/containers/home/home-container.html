@@ -4,7 +4,6 @@
   [currentUser]="(currentUser$ | async)"
   [accountHistory]="(accountHistory$ | async) ? $any(accountHistory$ | async) : []"
   (accountSelectionChange)="accountSelectionChange($event)"
-  (updateAccountBalance)="updateAccountBalance($event)"
   (refreshSelectedAccount)="refreshSelectedAccount()"
   (transferFunds)="transferFunds()"
 ></app-home>

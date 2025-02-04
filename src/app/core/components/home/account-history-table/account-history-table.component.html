@@ -15,7 +15,7 @@
           mat-sort-header> 
           Date 
         </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.changeDate | date : 'short':'UTC' }} </mat-cell>
+        <mat-cell *matCellDef="let element"> {{element.changeDate | date:'short' : "utc" }} </mat-cell>
       </ng-container>
     
       <ng-container matColumnDef="previousAmount">

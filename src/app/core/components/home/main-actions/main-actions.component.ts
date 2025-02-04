@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Inject, input, Input, OnChanges, OnInit, Output } from '@angular/core';
-import { Account } from '../../data/models/Account';
+import { Account } from '../../../data/models/Account';
 import { AuthService } from '@auth0/auth0-angular';
-import { environment } from '../../../../environments/environment';
-import { User } from '../../data/models/User';
+import { environment } from '../../../../../environments/environment';
+import { User } from '../../../data/models/User';
 
 @Component({
   selector: 'main-actions',

@@ -8,14 +8,13 @@ import { EffectsModule } from '@ngrx/effects';
 import { ShackEffects } from './data/store/shack.effects';
 import { shackReducer, SHACK_FEATURE_KEY } from './data/store/shack.reducer';
 import { StoreModule } from '@ngrx/store';
-import { CORE_SERVICES, UserService } from './data/services';
+import { CORE_SERVICES } from './data/services';
 import { MaterialModule } from '../material.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { SharedModule } from '../shared/shared.module';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { AppRoutingModule } from '../app-routing.module';
-import { authHttpInterceptorFn, AuthModule, provideAuth0 } from '@auth0/auth0-angular';
 
 @NgModule({
   declarations: [

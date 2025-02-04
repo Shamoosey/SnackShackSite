@@ -1,9 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeContainer } from './core/containers';
+import { GamesContainer, HomeContainer } from './core/containers';
 import { AuthGuard } from '@auth0/auth0-angular';
 import { LoginComponent } from './core/components';
-
 
 const routes: Routes = [
   {
@@ -13,6 +12,11 @@ const routes: Routes = [
   {
     path: "home",
     component: HomeContainer,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: "games",
+    component: GamesContainer,
     canActivate: [AuthGuard],
   },
   {

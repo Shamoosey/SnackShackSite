@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { Subject } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
-import { DialogComponent, DialogData } from '../../../shared/components/dialog/dialog.component';
-import { Account } from '../../data/models/Account';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
-import { BalanceChangeEvent } from '../../data/models/BalanceChangeEvent';
-import { TransactionType } from '../../data/models/Enums/TransactionType';
+import { BalanceChangeEvent } from '../../../data/models/BalanceChangeEvent';
+import { Account } from '../../../data/models/Account';
+import { TransactionType } from '../../../data/models/Enums/TransactionType';
+import { DialogComponent, DialogData } from '../../../../shared/components';
+
 
 @Component({
   selector: 'slot-machine',

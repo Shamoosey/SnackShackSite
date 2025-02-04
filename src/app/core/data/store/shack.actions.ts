@@ -77,20 +77,6 @@ export const SelectedAccountChange = createAction(
   props<{ accountId:string }>()
 )
 
-export const UpdateAmountBalance = createAction(
-  '[Shack] - Update Amount Balance',
-  props<{ data: BalanceChangeEvent }>()
-)
-
-export const UpdateAmountBalanceSuccess = createAction(
-  '[Shack] - Update Amount Balance Success',
-)
-
-export const UpdateAmountBalanceFailure = createAction(
-  '[Shack] - Update Amount Balance Failure',
-  props<{ error: string }>()
-)
-
 export const TransferAccountFunds = createAction(
   '[Shack] Transfer Account Funds',
   props<{ request: TransferAccountRequest }>()

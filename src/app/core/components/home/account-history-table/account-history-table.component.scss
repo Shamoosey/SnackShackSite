@@ -1,0 +1,22 @@
+@use "variables" as *;
+
+.account-history-wrapper{
+  .table-container {
+    .mat-mdc-table {
+      max-height: 400px !important;
+      height: 400px !important;
+      overflow: auto;
+      
+      .mat-column-previousAmount,
+      .mat-column-newAmount,
+      .mat-column-transactionAmount,
+      .mat-column-changeDate {
+        flex: 1 1;
+      }
+
+      .mat-column-transactionNotes {
+        flex: 4 1;
+      }
+    }
+  }
+}

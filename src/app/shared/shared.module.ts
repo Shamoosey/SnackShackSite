@@ -8,7 +8,7 @@ import { SHARED_COMPONENTS } from './components';
 
 @NgModule({
   declarations: [
-    ...SHARED_COMPONENTS
+    ...SHARED_COMPONENTS,
   ],
   imports: [
     ReactiveFormsModule,
@@ -20,7 +20,7 @@ import { SHARED_COMPONENTS } from './components';
   providers: [
   ],
   exports: [
-    ...SHARED_COMPONENTS
+    ...SHARED_COMPONENTS,
   ]
 })
 export class SharedModule { }

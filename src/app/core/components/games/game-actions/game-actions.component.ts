@@ -1,7 +1,7 @@
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Account } from '../../data/models/Account';
-import { BalanceChangeEvent } from '../../data/models/BalanceChangeEvent';
+import { Account } from '../../../data/models/Account';
+import { BalanceChangeEvent } from '../../../data/models/BalanceChangeEvent';
 
 @Component({
   selector: 'game-actions',

@@ -2,6 +2,11 @@
   <div class="action-list">
     <div class="header">
       <h1>Account Infomation</h1>
+      <button
+        (click)="refreshSelectedAccount.emit()" 
+        mat-icon-button>
+        <mat-icon>refresh</mat-icon>
+      </button>
     </div>
     <div class="content">
       <div class="account-select item">

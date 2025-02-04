@@ -4,7 +4,6 @@ import { catchError, map, withLatestFrom, of, switchMap, concatMap, mergeMap, ta
 import { Store, select } from "@ngrx/store";
 import { ShackState } from "./shack.reducer";
 import { AccountService, ExchangeRateService, UserService } from "../services";
-import * as fromRouter from '@ngrx/router-store';
 import * as ShackActions from "./shack.actions";
 import { Router } from "@angular/router";
 import { ShackSelectors } from ".";
@@ -51,32 +50,6 @@ export class ShackEffects {
       )
     )
   ));
-
-  updateAmountBalance$ = createEffect(() => this.actions$.pipe(
-    ofType(
-      ShackActions.UpdateAmountBalance
-    ),
-    withLatestFrom(
-      this.store.select(ShackSelectors.getCurrentUser),
-      this.store.select(ShackSelectors.getSelectedAccount)),
-    switchMap(([action, user, account]) => {
-      if(user && account){
-        return this.accountService.updateAccountBalance({
-          accountId: account.accountId,
-          userId: user.id,
-          amount: action.data.amount,
-          notes: action.data.notes,
-          transactionType: action.data.transactionType
-        }).pipe(
-          map(result => ShackActions.UpdateAmountBalanceSuccess()),
-          catchError(error => of(ShackActions.UpdateAmountBalanceFailure({error: "Unable to update user account"})))
-        )
-      } else {
-        return of(ShackActions.UpdateAmountBalanceFailure({error: "Unable to update user account"}))
-      }
-    }
-    )
-  ))
 
   transferFundsDialog$ = createEffect(() => this.actions$.pipe(
     ofType(
@@ -126,7 +99,6 @@ export class ShackEffects {
   getUserAccounts$ = createEffect(() => this.actions$.pipe(
     ofType(
       ShackActions.GetCurrentUserSuccess,
-      ShackActions.UpdateAmountBalanceSuccess,
       ShackActions.GetUserAccounts,
       ShackActions.TransferAccountFundsSuccess
     ),
@@ -169,7 +141,6 @@ export class ShackEffects {
     ofType(
       ShackActions.TransferAccountFundsFailure,
       ShackActions.GetUserAccountsFailure,
-      ShackActions.UpdateAmountBalanceFailure,
       ShackActions.GetCurrentUserFailure
 
     ),
