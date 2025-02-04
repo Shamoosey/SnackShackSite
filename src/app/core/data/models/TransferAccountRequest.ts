@@ -3,5 +3,4 @@ export interface TransferAccountRequest {
   fromAccountId: string;
   toAccountId: string;
   amount: number;
-  notes: string
 }

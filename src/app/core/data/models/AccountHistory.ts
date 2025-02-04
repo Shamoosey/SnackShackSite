@@ -4,4 +4,5 @@ export interface AccountHistory {
   previousAmount: number,
   transactionAmount: number,
   transactionNotes: string,
+  currencyCode:string
 }

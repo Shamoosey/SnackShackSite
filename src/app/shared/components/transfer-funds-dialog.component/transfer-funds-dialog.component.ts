@@ -108,7 +108,6 @@ export class TransferFundsDialog implements OnInit {
           toAccountId: formData.toAccount,
           amount: this.exchangeResult,
           userId: this.data.userId,
-          notes: "Account transfer"
         }
       } as TransferFundsDialogResult);
     }
