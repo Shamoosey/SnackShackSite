@@ -12,6 +12,7 @@ import { MatSort } from '@angular/material/sort';
 })
 export class AccountHistoryTableComponent implements OnInit, AfterViewInit, OnChanges{
   @Input() accountHistory: AccountHistory[] = []
+  @Input() isLoading: boolean = false;
   offset = new Date().getTimezoneOffset();
   dataSource = new MatTableDataSource<AccountHistory>();
   @ViewChild(MatSort) sort!: MatSort;

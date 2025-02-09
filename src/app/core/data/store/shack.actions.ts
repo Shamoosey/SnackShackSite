@@ -50,7 +50,7 @@ export const GetUserAccounts = createAction(
 
 export const GetUserAccountsSuccess = createAction(
   '[Shack] Get User Accounts Success',
-  props<{accounts: Account[]}>()
+  props<{ accounts: Account[] }>()
 )
 
 export const GetUserAccountsFailure = createAction(

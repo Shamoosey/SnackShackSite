@@ -1,4 +1,4 @@
-import { Action, createReducer, on } from "@ngrx/store";
+import { Action, createReducer, on, State } from "@ngrx/store";
 import * as ShackActions from "./shack.actions"
 import { Account } from "../models/Account";
 import { ExchangeRate } from "../models/ExchangeRate";
@@ -10,17 +10,21 @@ export const SHACK_FEATURE_KEY = "shack"
 export interface ShackState {
   currentUser: User | null,
   userAccounts: Account[],
-  selectedAccount: Account | null;
+  isUserAccountsLoading: boolean,
+  accountHistory: AccountHistory[],
+  isUserAccountHistoryLoading: boolean;
+  selectedAccount: Account | null,
   exchangeRates: ExchangeRate[],
-  accountHistory: AccountHistory[]
 }
 
 const initialState: ShackState = {
   currentUser: null,
   userAccounts: [],
+  isUserAccountsLoading: false,
+  accountHistory: [],
+  isUserAccountHistoryLoading: false,
   selectedAccount: null,
   exchangeRates: [],
-  accountHistory: []
 };
 
 export const shackReducer = createReducer(
@@ -36,15 +40,23 @@ export const shackReducer = createReducer(
       exchangeRates: result
     }
   }),
+  on(ShackActions.GetCurrentUser, (state) => {
+    return {
+      ...initialState,
+      exchangeRates: state.exchangeRates,
+    }
+  }),
   on(ShackActions.GetCurrentUserSuccess, (state, { user }) => {
     return {
       ...state,
-      currentUser: user
+      currentUser: user,
     }
   }),
   on(ShackActions.GetUserAccounts, (state) => {
     return {
       ...state,
+      isUserAccountsLoading: true,
+      accountHistory: [],
       userAccounts: [],
     }
   }),
@@ -52,7 +64,14 @@ export const shackReducer = createReducer(
     return {
       ...state,
       userAccounts: accounts,
-      selectedAccount: accounts.find(x => x.accountId == state.selectedAccount?.accountId) ?? null
+      isUserAccountsLoading: false,
+      selectedAccount: accounts.find(x => x.accountId == state.selectedAccount?.accountId) ?? accounts[0] ?? null
+    }
+  }),
+  on(ShackActions.GetUserAccountsFailure, (state) => {
+    return {
+      ...state,
+      isUserAccountsLoading: false
     }
   }),
   on(ShackActions.SelectedAccountChange, (state, { accountId }) => {
@@ -62,10 +81,24 @@ export const shackReducer = createReducer(
       selectedAccount: account ?? null
     }
   }),
+  on(ShackActions.GetUserAccountHistory, (state) => {
+    return {
+      ...state,
+      accountHistory: [],
+      isUserAccountHistoryLoading: true
+    }
+  }),
   on(ShackActions.GetUserAccountHistorySuccess, (state, { accounts }) => {
     return {
       ...state,
-      accountHistory: accounts
+      accountHistory: accounts,
+      isUserAccountHistoryLoading: false
+    }
+  }),
+  on(ShackActions.GetUserAccountHistoryFailure, (state) => {
+    return {
+      ...state,
+      isUserAccountHistoryLoading: false
     }
   })
 )

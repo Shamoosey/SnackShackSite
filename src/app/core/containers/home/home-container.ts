@@ -13,6 +13,8 @@ export class HomeContainer implements OnInit {
   selectedAccount$ = this.store.select(ShackSelectors.getSelectedAccount);
   currentUser$ = this.store.select(ShackSelectors.getCurrentUser)
   accountHistory$ = this.store.select(ShackSelectors.getAccountHistory);
+  loadingUserAccounts$ = this.store.select(ShackSelectors.getUserAccountsLoading)
+  loadingUserAccountHistory$ = this.store.select(ShackSelectors.getUserAccountHistoryLoading)
 
   constructor(
     private store: Store<ShackState>
@@ -32,6 +34,6 @@ export class HomeContainer implements OnInit {
   }
 
   refreshSelectedAccount(){
-    this.store.dispatch(ShackActions.GetCurrentUser());
+    this.store.dispatch(ShackActions.GetUserAccounts());
   }
 }

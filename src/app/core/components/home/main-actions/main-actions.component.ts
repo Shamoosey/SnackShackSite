@@ -3,6 +3,7 @@ import { Account } from '../../../data/models/Account';
 import { AuthService } from '@auth0/auth0-angular';
 import { environment } from '../../../../../environments/environment';
 import { User } from '../../../data/models/User';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'main-actions',
@@ -30,6 +31,7 @@ export class MainActionsComponent implements OnInit, OnChanges {
 
   constructor(    
     private auth: AuthService,
+    private router: Router
   ) {}
   
   ngOnInit(): void {
@@ -39,13 +41,16 @@ export class MainActionsComponent implements OnInit, OnChanges {
   ngOnChanges (){
   }
 
+  gamesClick(){
+    this.router.navigate(["games"])
+  }
+
   logoutClick(){
     this.auth.logout({ logoutParams: { returnTo: `${environment.auth.authorizationParams.redirect_uri}` } });
   }
 
-  deleteAccountClick(){
-    if(this.selectedAccount){
-      this.transferFunds.emit();
-    }
+  transferFundsClick(){
+    this.transferFunds.emit();
   }
+  
 }

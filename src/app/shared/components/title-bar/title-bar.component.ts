@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'title-bar',
@@ -7,4 +8,11 @@ import { Component, Input } from '@angular/core';
   styleUrl: './title-bar.component.scss'
 })
 export class TitleBarComponent {
+  constructor(
+    private router: Router
+  ) {}
+
+  public navigateToHome(){
+    this.router.navigate(["/home"])
+  }
 }

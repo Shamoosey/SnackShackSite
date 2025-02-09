@@ -3,6 +3,7 @@
 .title-bar-wrapper {
   padding: 16px 16px 0px 16px;
   background-color: $color-blue;
+  cursor: pointer;
   .main-header {
     display: flex;
     flex-direction: row;

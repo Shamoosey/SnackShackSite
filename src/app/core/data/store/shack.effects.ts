@@ -96,11 +96,20 @@ export class ShackEffects {
     )
   ));
 
-  getUserAccounts$ = createEffect(() => this.actions$.pipe(
+  triggerGetUserAccounts$ = createEffect(() => this.actions$.pipe(
     ofType(
       ShackActions.GetCurrentUserSuccess,
-      ShackActions.GetUserAccounts,
       ShackActions.TransferAccountFundsSuccess
+    ),
+    switchMap((action) => {
+      return of(ShackActions.GetUserAccounts())
+    })
+  ))
+
+
+  getUserAccounts$ = createEffect(() => this.actions$.pipe(
+    ofType(
+      ShackActions.GetUserAccounts,
     ),
     withLatestFrom(this.store.select(ShackSelectors.getCurrentUser)),
     switchMap(([action, user]) => {
@@ -115,11 +124,19 @@ export class ShackEffects {
     })
   ));
 
+  triggerGetUserAccountHistory$ = createEffect(() => this.actions$.pipe(
+    ofType(
+      ShackActions.SelectedAccountChange,
+      ShackActions.GetUserAccountsSuccess
+    ),
+    switchMap((action) => {
+      return of(ShackActions.GetUserAccountHistory())
+    })
+  ))
 
   getUserAccountsHistory$ = createEffect(() => this.actions$.pipe(
     ofType(
       ShackActions.GetUserAccountHistory,
-      ShackActions.SelectedAccountChange
     ),
     withLatestFrom(
       this.store.select(ShackSelectors.getCurrentUser),
@@ -132,17 +149,26 @@ export class ShackEffects {
           catchError(error => of(ShackActions.GetUserAccountHistoryFailure({ error: error.message })))
         )
       } else {
-        return of(ShackActions.GetUserAccountsFailure({ error: "User is null" }))
+        return of(ShackActions.GetUserAccountHistoryFailure({ error: "user | selectedAccount is null" }))
       }
     })
   ));
 
-  showSnackBar$ = createEffect(() => this.actions$.pipe(
+  showTransferSuccessSnackBar$ = createEffect(() => this.actions$.pipe(
+    ofType(
+      ShackActions.TransferAccountFundsSuccess,
+    ),
+    tap((action) => {
+      this.snackBar.open("Successfully Transfered Funds", undefined, {duration: this.SNACK_BAR_DURATION});
+    })
+    ), { dispatch: false }
+  );
+
+  showErrorSnackBar$ = createEffect(() => this.actions$.pipe(
     ofType(
       ShackActions.TransferAccountFundsFailure,
       ShackActions.GetUserAccountsFailure,
       ShackActions.GetCurrentUserFailure
-
     ),
     tap((action) => {
       this.snackBar.open(action.error, undefined, {duration: this.SNACK_BAR_DURATION});

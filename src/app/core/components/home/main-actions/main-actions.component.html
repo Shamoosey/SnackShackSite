@@ -9,20 +9,18 @@
       </button>
     </div>
     <div class="content">
-      <div class="account-select item">
-        <mat-form-field>
-          <mat-label>Select Account</mat-label>
-          <mat-select (selectionChange)="accountSelectionChange.emit($event.value)" [value]="selectedAccount?.accountId">
-            @for (acct of accounts; track acct) {
-              <mat-option [value]="acct.accountId">{{acct.accountName}} - {{acct.currencyCode}}</mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
+      <div class="account-name item">
+        <div class="title">Account Name:</div>
+        <div class="value">{{selectedAccount?.accountName}}</div>
+      </div>
+      <div class="current-balance item">
+        <div class="title">Current Balance:</div>
+        <div class="value">{{ selectedAccountBalanace }}</div>
       </div>
       <div class="actions item"> 
         <button 
           mat-flat-button 
-          (click)="deleteAccountClick()"
+          (click)="transferFundsClick()"
           >Transfer Funds
         </button>
         <button 
@@ -31,13 +29,12 @@
           >Log Out
         </button>
       </div>
-      <div class="account-name item">
-        <div class="title">Account Name:</div>
-        <div class="value">{{selectedAccount?.accountName}}</div>
-      </div>
-      <div class="current-balance item">
-        <div class="title">Current Balance:</div>
-        <div class="value">{{ selectedAccountBalanace }}</div>
+      <div class="games item">
+        <button 
+        mat-flat-button 
+        (click)="gamesClick()"
+        >Games
+      </button>
       </div>
     </div>
   </div>

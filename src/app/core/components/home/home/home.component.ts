@@ -15,6 +15,8 @@ export class HomeComponent implements OnInit{
   @Input() selectedAccount: Account | null = null;
   @Input() currentUser: User | null = null;
   @Input() accountHistory: AccountHistory[] = []
+  @Input() loadingUserAccounts: boolean = false;
+  @Input() loadingUserAccountHistory: boolean = false;
   
   @Output() accountSelectionChange = new EventEmitter<string>();
   @Output() updateAccountBalance = new EventEmitter<BalanceChangeEvent>();

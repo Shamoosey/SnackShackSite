@@ -2,6 +2,7 @@
   <div class="header-content">
     <h2>Account History</h2>
   </div>
+  <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
   <section class="table-container">
     <mat-table  
       [dataSource]="dataSource" 
@@ -23,7 +24,7 @@
           mat-sort-header> 
           Previous Amount
         </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.previousAmount}} </mat-cell>
+        <mat-cell *matCellDef="let element"> ${{element.previousAmount}} </mat-cell>
       </ng-container>
     
       <ng-container matColumnDef="newAmount">
@@ -31,7 +32,7 @@
           mat-sort-header> 
           New Amount
         </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.newAmount}} </mat-cell>
+        <mat-cell *matCellDef="let element"> ${{element.newAmount}} </mat-cell>
       </ng-container>
     
       <ng-container matColumnDef="transactionAmount">
@@ -39,7 +40,7 @@
           mat-sort-header> 
           Transaction Amount
         </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.transactionAmount}} </mat-cell>
+        <mat-cell *matCellDef="let element"> ${{element.transactionAmount}} </mat-cell>
       </ng-container>
     
       <ng-container matColumnDef="transactionNotes">
