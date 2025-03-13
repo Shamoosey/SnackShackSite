@@ -36,6 +36,13 @@
         >Games
       </button>
       </div>
+      <div class="games item" *ngIf="isAdminUser">
+        <button 
+        mat-flat-button 
+        (click)="adminClick()"
+        >Admin Configuration
+      </button>
+      </div>
     </div>
   </div>
 </div>

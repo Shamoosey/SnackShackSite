@@ -45,6 +45,10 @@ export class MainActionsComponent implements OnInit, OnChanges {
     this.router.navigate(["games"])
   }
 
+  adminClick(){
+    this.router.navigate(["admin"])
+  }
+
   logoutClick(){
     this.auth.logout({ logoutParams: { returnTo: `${environment.auth.authorizationParams.redirect_uri}` } });
   }

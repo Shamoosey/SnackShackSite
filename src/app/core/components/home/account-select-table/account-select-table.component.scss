@@ -6,18 +6,22 @@
       max-height: 400px !important;
       height: 400px !important;
       overflow: auto;
+      border-radius: 16px;
+      background-color: $color-gray-400;
 
       .mat-mdc-row {
+        background-color: $color-gray-300;
         cursor: pointer;
         &:hover{
-          background-color: $color-gray-200;
+          background-color: $color-gray-100;
         }
         &.selected-account {
-          background-color: $color-gray-300;
+          background-color: $color-gray-100;
         }
       }
       .mat-mdc-header-cell {
         font-size: 18px;
+        background-color: $color-gray-500;
       }
 
       .mat-mdc-cell {
